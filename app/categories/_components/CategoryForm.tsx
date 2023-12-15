@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import createCategorySchema from '@/app/validationSchemas';
+import categorySchema from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
@@ -15,7 +15,7 @@ import { Category } from '@prisma/client';
 //   slug: string;
 // }
 
-type CategoryFormData = z.infer<typeof createCategorySchema>;
+type CategoryFormData = z.infer<typeof categorySchema>;
 
 // interface Props {
 //   category?: Category
@@ -28,7 +28,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<CategoryFormData>({
-    resolver: zodResolver(createCategorySchema),
+    resolver: zodResolver(categorySchema),
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
@@ -36,8 +36,10 @@ const CategoryForm = ({ category }: { category?: Category }) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
-      await axios.post('/api/categories', data);
+      if (category) await axios.patch('/api/categories/' + category.slug, data);
+      else await axios.post('/api/categories', data);
       router.push('/categories');
+      router.refresh();
     } catch (error) {
       setSubmitting(false);
       setError('An unexpected error occurred.');
@@ -83,7 +85,8 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           className='input input-bordered w-full max-w-xs form-control'
         />
         <button disabled={isSubmitting} className='btn btn-primary'>
-          Create Category {isSubmitting && <Spinner />}
+          {category ? 'Update' : 'Create'} Category{' '}
+          {isSubmitting && <Spinner />}
         </button>
       </form>
     </div>
