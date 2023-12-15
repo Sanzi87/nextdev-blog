@@ -9,17 +9,9 @@ const NavBar = () => {
   const currentPath = usePathname();
   const links = [
     { label: 'Home', href: '/' },
-    { label: 'Next JS', href: '/next-js' },
-    { label: 'React JS', href: '/react-js' },
-    { label: 'TypeScript', href: '/typescript' },
-    { label: 'JavaScript', href: '/javascript' },
-    { label: 'HTML & CSS', href: '/html-css' },
-    { label: 'Django', href: '/django' },
-    { label: 'Python', href: '/python' },
-    { label: 'PHP', href: '/php' },
-    { label: 'Git', href: '/git' },
-    { label: 'Joomla', href: '/joomla' },
-    { label: 'WordPress', href: '/wordpress' },
+    { label: 'Posts', href: '/posts' },
+    { label: 'Categories', href: '/categories' },
+    { label: 'Login', href: '/login' },
   ];
   return (
     <nav className='flex space-x-6 border-b mb-5 px-5 h-14 items-center'>
