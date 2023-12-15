@@ -24,8 +24,7 @@ export async function POST(request: NextRequest) {
     const newCategory = await prisma.category.create({
         data: {
             title: body.title,
-            slug: body.slug,
-            img: body.img
+            slug: body.slug
         },
     });
     return NextResponse.json(newCategory, { status: 201 });

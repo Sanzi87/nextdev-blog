@@ -18,7 +18,7 @@
     "prisma": "^5.7.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.47.0",
+    "react-hook-form": "^7.49.2",
     "react-icons": "^4.11.0",
     "zod": "^3.22.4"
   },

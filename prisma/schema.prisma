@@ -59,10 +59,9 @@ model VerificationToken {
 }
 
 model Category {
-  id    Int     @id @default(autoincrement())
-  slug  String  @unique
+  id    Int    @id @default(autoincrement())
+  slug  String @unique
   title String
-  img   String?
   Posts Post[]
 }
 
