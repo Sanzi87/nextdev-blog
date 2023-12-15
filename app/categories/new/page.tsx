@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import createCategorySchema from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 // interface CategoryForm {
 //   title: string;
@@ -25,6 +26,8 @@ const NewCategoryPage = () => {
     resolver: zodResolver(createCategorySchema),
   });
   const [error, setError] = useState('');
+  const [isSubmitting, setSubmitting] = useState(false);
+
   return (
     <div className='max-w-xl'>
       {error && (
@@ -50,9 +53,11 @@ const NewCategoryPage = () => {
         className='space-y-3'
         onSubmit={handleSubmit(async (data) => {
           try {
+            setSubmitting(true);
             await axios.post('/api/categories', data);
             router.push('/categories');
           } catch (error) {
+            setSubmitting(false);
             setError('An unexpected error occurred.');
           }
         })}
@@ -71,7 +76,9 @@ const NewCategoryPage = () => {
           {...register('slug')}
           className='input input-bordered w-full max-w-xs form-control'
         />
-        <button className='btn btn-success'>Create Category</button>
+        <button disabled={isSubmitting} className='btn btn-success'>
+          Create Category {isSubmitting && <Spinner />}
+        </button>
       </form>
     </div>
   );
