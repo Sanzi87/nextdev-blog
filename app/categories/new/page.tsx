@@ -28,6 +28,17 @@ const NewCategoryPage = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
 
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setSubmitting(true);
+      await axios.post('/api/categories', data);
+      router.push('/categories');
+    } catch (error) {
+      setSubmitting(false);
+      setError('An unexpected error occurred.');
+    }
+  });
+
   return (
     <div className='max-w-xl'>
       {error && (
@@ -49,19 +60,7 @@ const NewCategoryPage = () => {
         </div>
       )}
 
-      <form
-        className='space-y-3'
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setSubmitting(true);
-            await axios.post('/api/categories', data);
-            router.push('/categories');
-          } catch (error) {
-            setSubmitting(false);
-            setError('An unexpected error occurred.');
-          }
-        })}
-      >
+      <form className='space-y-3' onSubmit={onSubmit}>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <input
           type='text'
