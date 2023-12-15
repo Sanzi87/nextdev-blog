@@ -1,7 +1,8 @@
 import prisma from '@/prisma/client';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import React from 'react';
+import EditCategoryButton from './EditCategoryButton';
+import CategoryPosts from '../categoryPosts';
 
 interface Props {
   params: { slug: string };
@@ -16,13 +17,10 @@ const CategoryDetailPage = async ({ params }: Props) => {
   return (
     <div className='flex flex-row'>
       <div className='basis-3/4'>
-        <h1>{category.title} posts</h1>
-        <p>{category.slug}</p>
+        <CategoryPosts category={category} />
       </div>
       <div className='basis-1/4'>
-        <button className='btn btn-primary'>
-          <Link href={`/categories/${category.slug}/edit`}>Edit</Link>
-        </button>
+        <EditCategoryButton categorySlug={category.slug} />
       </div>
     </div>
   );
