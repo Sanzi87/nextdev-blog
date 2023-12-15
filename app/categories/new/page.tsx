@@ -75,7 +75,7 @@ const NewCategoryPage = () => {
           {...register('slug')}
           className='input input-bordered w-full max-w-xs form-control'
         />
-        <button disabled={isSubmitting} className='btn btn-success'>
+        <button disabled={isSubmitting} className='btn btn-primary'>
           Create Category {isSubmitting && <Spinner />}
         </button>
       </form>
