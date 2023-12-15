@@ -8,12 +8,14 @@ interface Category {
   email: string;
 }
 
-const categoryPage = async () => {
+const CategoriesPage = async () => {
   const categories = await prisma.category.findMany();
 
   return (
     <div>
-      <Link href='/categories/new'>New Category</Link>
+      <button className='btn btn-success'>
+        <Link href='/categories/new'>New Category</Link>
+      </button>
       <div>
         {categories.map((category) => (
           <div key={category.id}>{category.title}</div>
@@ -23,4 +25,4 @@ const categoryPage = async () => {
   );
 };
 
-export default categoryPage;
+export default CategoriesPage;
