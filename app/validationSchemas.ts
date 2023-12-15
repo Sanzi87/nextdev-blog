@@ -1,8 +1,8 @@
 import {z} from 'zod';
 
-const schema = z.object ({
+const createCategorySchema = z.object ({
     title: z.string().min(5),
     slug: z.string().min(5)
 })
 
-export default schema;
+export default createCategorySchema;

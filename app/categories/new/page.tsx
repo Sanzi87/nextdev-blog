@@ -3,15 +3,27 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import createCategorySchema from '@/app/validationSchemas';
+import { z } from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage';
 
-interface CategoryForm {
-  title: string;
-  slug: string;
-}
+// interface CategoryForm {
+//   title: string;
+//   slug: string;
+// }
+
+type CategoryForm = z.infer<typeof createCategorySchema>;
 
 const NewCategoryPage = () => {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<CategoryForm>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CategoryForm>({
+    resolver: zodResolver(createCategorySchema),
+  });
   const [error, setError] = useState('');
   return (
     <div className='max-w-xl'>
@@ -45,12 +57,14 @@ const NewCategoryPage = () => {
           }
         })}
       >
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <input
           type='text'
           placeholder='Title'
           {...register('title')}
           className='input input-bordered w-full max-w-xs form-control'
         />
+        <ErrorMessage>{errors.slug?.message}</ErrorMessage>
         <input
           type='text'
           placeholder='Slug'
