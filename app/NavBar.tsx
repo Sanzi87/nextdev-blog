@@ -23,7 +23,7 @@ const NavBar = () => {
               <AiFillBug />
             </Link>
           </div>
-          <div>
+          <div className='flex items-center'>
             <ul className='navbar-links flex space-x-6'>
               {links.map((link) => (
                 <li key={link.href}>
@@ -42,7 +42,30 @@ const NavBar = () => {
           </div>
           <div>
             {status === 'authenticated' && (
-              <Link href='/api/auth/signout'>Log out</Link>
+              // <Link href='/api/auth/signout'>Log out</Link>
+              <div className='dropdown dropdown-end'>
+                <div tabIndex={0} role='button' className=''>
+                  <div className='avatar'>
+                    <div className='w-10 rounded-full ring ring-offset-base-100 ring-offset-2'>
+                      <img src={session.user!.image!} />
+                    </div>
+                  </div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className='dropdown-content z-[1] menu p-2 shadow bg-neutral rounded-box w-52 text-center'
+                >
+                  <li className='pb-3'>{session.user!.name}</li>
+                  <li>
+                    <Link
+                      className='justify-center py-3'
+                      href='/api/auth/signout'
+                    >
+                      Log out
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             )}
             {status === 'unauthenticated' && (
               <Link href='/api/auth/signin'>Log in</Link>
