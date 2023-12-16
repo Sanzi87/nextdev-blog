@@ -1,7 +1,8 @@
 'use client';
-import React, { useState } from 'react';
+import Spinner from '@/app/components/Spinner';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 declare global {
   interface Window {
@@ -12,23 +13,28 @@ declare global {
 const DeleteCategoryButton = ({ categorySlug }: { categorySlug: string }) => {
   const router = useRouter();
   const [error, setError] = useState(false);
+  const [isDeleting, setDeleting] = useState(false);
 
   const deleteCategory = async () => {
     try {
+      setDeleting(true);
       await axios.delete('/api/categories/' + categorySlug);
       router.push('/categories');
       router.refresh();
     } catch (error) {
+      setDeleting(false);
       setError(true);
     }
   };
   return (
     <>
       <button
+        disabled={isDeleting}
         className='btn btn-error'
         onClick={() => window.delete_confirmation.showModal()}
       >
         Delete
+        {isDeleting && <Spinner />}
       </button>
       <dialog
         id='delete_confirmation'
