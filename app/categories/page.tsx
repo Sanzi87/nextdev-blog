@@ -1,6 +1,7 @@
 import React from 'react';
 import prisma from '@/prisma/client';
 import Link from 'next/link';
+import EditCategoryButton from './[slug]/EditCategoryButton';
 
 interface Category {
   id: string;
@@ -14,8 +15,10 @@ const CategoriesPage = async () => {
   return (
     <div>
       <div className='mb-5'>
-        <button className='btn btn-primary'>
-          <Link href='/categories/new'>New Category</Link>
+        <button className='btn btn-primary p-0'>
+          <Link className='w-full p-4' href='/categories/new'>
+            New Category
+          </Link>
         </button>
       </div>
       <div className='flex flex-wrap justify-center mt-10'>
@@ -37,9 +40,10 @@ const CategoriesPage = async () => {
               </h2>
               <p className='text-center'>See all {category.title} posts.</p>
               <div className='card-actions justify-center'>
-                <button className='btn btn-primary'>
+                {/* <button className='btn btn-primary'>
                   <Link href={`/categories/${category.slug}/edit`}>Edit</Link>
-                </button>
+                </button> */}
+                <EditCategoryButton categorySlug={category.slug} />
               </div>
             </div>
           </div>

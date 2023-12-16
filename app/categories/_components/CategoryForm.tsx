@@ -9,6 +9,7 @@ import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 import { Category } from '@prisma/client';
+import Link from 'next/navigation';
 
 // interface CategoryForm {
 //   title: string;
@@ -87,6 +88,11 @@ const CategoryForm = ({ category }: { category?: Category }) => {
         <button disabled={isSubmitting} className='btn btn-primary'>
           {category ? 'Update' : 'Create'} Category{' '}
           {isSubmitting && <Spinner />}
+        </button>
+        <button className='btn btn-outline p-0 ml-3'>
+          <a className='w-full p-4' href='/categories'>
+            Cancel
+          </a>
         </button>
       </form>
     </div>

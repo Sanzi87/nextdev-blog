@@ -1,19 +1,28 @@
 'use client';
-import Link from 'next/link';
 import React from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
+declare global {
+  interface Window {
+    delete_confirmation: HTMLFormElement;
+  }
+}
 
 const DeleteCategoryButton = ({ categorySlug }: { categorySlug: string }) => {
+  const router = useRouter();
   return (
     <>
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button
         className='btn btn-error'
-        onClick={() => document.getElementById('my_modal_5').showModal()}
+        onClick={() => window.delete_confirmation.showModal()}
       >
-        {/* <Link href={`/categories/${categorySlug}/edit`}>Delete</Link> */}{' '}
         Delete
       </button>
-      <dialog id='my_modal_5' className='modal modal-bottom sm:modal-middle'>
+      <dialog
+        id='delete_confirmation'
+        className='modal modal-bottom sm:modal-middle'
+      >
         <div className='modal-box'>
           <h3 className='font-bold text-lg'>Confirm Deletion</h3>
           <p className='py-4'>
@@ -22,10 +31,17 @@ const DeleteCategoryButton = ({ categorySlug }: { categorySlug: string }) => {
           </p>
           <div className='modal-action'>
             <form method='dialog'>
-              {/* if there is a button in form, it will close the modal */}
               <button className='btn btn-outline'>Cancel</button>
-              <button className='btn btn-error ml-2'>
-                <Link href={`/categories/${categorySlug}/edit`}>Delete</Link>
+              <button
+                className='btn btn-error ml-2 '
+                onClick={async () => {
+                  await axios.delete('/api/categories/' + categorySlug);
+                  router.push('/categories');
+                  router.refresh();
+                }}
+              >
+                {/* <Link href={`/categories/${categorySlug}/edit`}>Delete</Link> */}
+                Delete
               </button>
             </form>
           </div>
