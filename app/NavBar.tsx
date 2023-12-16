@@ -55,7 +55,8 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === 'loading') return null;
+  if (status === 'loading')
+    return <div className='flex items-center py-3 w-10'></div>;
 
   if (status === 'unauthenticated')
     return (

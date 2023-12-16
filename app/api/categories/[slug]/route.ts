@@ -1,27 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import schema from "../../../validationSchemas";
 import prisma from "@/prisma/client";
-
-
-// export async function GET(
-//   request: NextRequest,
-//   { params }: { params: { id: string } }
-// ) {
-//   const category = await prisma.category.findUnique({
-//     where: { id: params.id },
-//   });
-
-//   if (!category)
-//     return NextResponse.json({ error: "Category not found" }, { status: 404 });
-
-//   return NextResponse.json({ category });
-// }
-
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/auth/authOptions";
 
 export async function PATCH(
     request: NextRequest,
     { params }: { params: { slug: string } }
   ) {
+    
+    const session = await getServerSession(authOptions);
+    if(!session)
+        return NextResponse.json({}, {status: 401});
 
     const body = await request.json();
     const validation = schema.safeParse(body);
@@ -50,6 +40,11 @@ export async function PATCH(
 export async function DELETE(
   request: NextRequest,
   {params}: {params: {slug: string}}) {
+    
+    const session = await getServerSession(authOptions);
+    if(!session)
+        return NextResponse.json({}, {status: 401});
+      
     const category = await prisma.category.findUnique({
       where: { slug: params.slug}
     });

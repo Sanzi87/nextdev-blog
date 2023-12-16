@@ -2,6 +2,8 @@ import React from 'react';
 import prisma from '@/prisma/client';
 import Link from 'next/link';
 import EditCategoryButton from './[slug]/EditCategoryButton';
+import authOptions from '../auth/authOptions';
+import { getServerSession } from 'next-auth';
 
 interface Category {
   id: string;
@@ -10,16 +12,19 @@ interface Category {
 }
 
 const CategoriesPage = async () => {
+  const session = await getServerSession(authOptions);
   const categories = await prisma.category.findMany();
 
   return (
     <div>
       <div className='mb-5'>
-        <button className='btn btn-primary p-0'>
-          <Link className='w-full p-4' href='/categories/new'>
-            New Category
-          </Link>
-        </button>
+        {session && (
+          <button className='btn btn-primary p-0'>
+            <Link className='w-full p-4' href='/categories/new'>
+              New Category
+            </Link>
+          </button>
+        )}
       </div>
       <div className='flex flex-wrap justify-center mt-10'>
         {categories.map((category) => (
@@ -43,7 +48,12 @@ const CategoriesPage = async () => {
                 {/* <button className='btn btn-primary'>
                   <Link href={`/categories/${category.slug}/edit`}>Edit</Link>
                 </button> */}
-                <EditCategoryButton categorySlug={category.slug} />
+
+                {session && (
+                  <>
+                    <EditCategoryButton categorySlug={category.slug} />
+                  </>
+                )}
               </div>
             </div>
           </div>

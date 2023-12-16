@@ -4,12 +4,15 @@ import React from 'react';
 import EditCategoryButton from './EditCategoryButton';
 import CategoryPosts from '../CategoryPosts';
 import DeleteCategoryButton from './DeleteCategoryButton';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/authOptions';
 
 interface Props {
   params: { slug: string };
 }
 
 const CategoryDetailPage = async ({ params }: Props) => {
+  const session = await getServerSession(authOptions);
   const category = await prisma.category.findUnique({
     where: { slug: params.slug },
   });
@@ -21,8 +24,12 @@ const CategoryDetailPage = async ({ params }: Props) => {
         <CategoryPosts category={category} />
       </div>
       <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
-        <EditCategoryButton categorySlug={category.slug} />
-        <DeleteCategoryButton categorySlug={category.slug} />
+        {session && (
+          <>
+            <EditCategoryButton categorySlug={category.slug} />
+            <DeleteCategoryButton categorySlug={category.slug} />
+          </>
+        )}
       </div>
     </div>
   );
