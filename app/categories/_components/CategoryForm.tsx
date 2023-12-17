@@ -48,7 +48,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
   });
 
   return (
-    <div className='max-w-xl'>
+    <div className='max-w-xl mx-auto'>
       {error && (
         <div role='alert' className='alert alert-error mb-5'>
           <svg
@@ -75,7 +75,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           defaultValue={category?.title}
           placeholder='Title'
           {...register('title')}
-          className='input input-bordered w-full max-w-xs form-control'
+          className='input input-bordered w-full input-lg form-control'
         />
         <ErrorMessage>{errors.slug?.message}</ErrorMessage>
         <input
@@ -83,7 +83,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           defaultValue={category?.slug}
           placeholder='Slug'
           {...register('slug')}
-          className='input input-bordered w-full max-w-xs form-control'
+          className='input input-bordered w-full input-lg form-control'
         />
         <button disabled={isSubmitting} className='btn btn-primary'>
           {category ? 'Update' : 'Create'} Category{' '}

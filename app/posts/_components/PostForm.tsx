@@ -1,31 +1,24 @@
 'use client';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { postSchema } from '@/app/validationSchemas';
-import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
+import { postSchema } from '@/app/validationSchemas';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Post } from '@prisma/client';
-import Link from 'next/navigation';
-
-// interface PostForm {
-//   title: string;
-//   slug: string;
-// }
+import axios from 'axios';
+import 'easymde/dist/easymde.min.css';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import SimpleMDE from 'react-simplemde-editor';
+import { z } from 'zod';
 
 type PostFormData = z.infer<typeof postSchema>;
-
-// interface Props {
-//   post?: Post
-// }
 
 const PostForm = ({ post }: { post?: Post }) => {
   const router = useRouter();
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<PostFormData>({
@@ -48,7 +41,7 @@ const PostForm = ({ post }: { post?: Post }) => {
   });
 
   return (
-    <div className='max-w-xl'>
+    <div className='max-w-xl mx-auto'>
       {error && (
         <div role='alert' className='alert alert-error mb-5'>
           <svg
@@ -68,14 +61,14 @@ const PostForm = ({ post }: { post?: Post }) => {
         </div>
       )}
 
-      <form className='space-y-3' onSubmit={onSubmit}>
+      <form className='space-y-4' onSubmit={onSubmit}>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <input
           type='text'
           defaultValue={post?.title}
           placeholder='Title'
           {...register('title')}
-          className='input input-bordered w-full max-w-xs form-control'
+          className='input input-bordered input-lg w-full form-control'
         />
         <ErrorMessage>{errors.slug?.message}</ErrorMessage>
         <input
@@ -83,32 +76,35 @@ const PostForm = ({ post }: { post?: Post }) => {
           defaultValue={post?.slug}
           placeholder='Slug'
           {...register('slug')}
-          className='input input-bordered w-full max-w-xs form-control'
+          className='input input-bordered input-lg w-full form-control'
         />
-        <ErrorMessage>{errors.desc?.message}</ErrorMessage>
-        <input
-          type='text'
-          defaultValue={post?.desc}
-          placeholder='Post'
-          {...register('desc')}
-          className='input input-bordered w-full max-w-xs form-control'
-        />
+
         <ErrorMessage>{errors.catSlug?.message}</ErrorMessage>
         <input
           type='text'
           defaultValue={post?.catSlug}
           placeholder='Category'
           {...register('catSlug')}
-          className='input input-bordered w-full max-w-xs form-control'
+          className='input input-bordered input-lg w-full form-control'
         />
-        <ErrorMessage>{errors.catSlug?.message}</ErrorMessage>
+        <ErrorMessage>{errors.userEmail?.message}</ErrorMessage>
         <input
           type='text'
           defaultValue={post?.userEmail}
           placeholder='User'
           {...register('userEmail')}
-          className='input input-bordered w-full max-w-xs form-control'
+          className='input input-bordered input-lg w-full form-control'
         />
+        <ErrorMessage>{errors.desc?.message}</ErrorMessage>
+        <Controller
+          name='desc'
+          control={control}
+          defaultValue={post?.desc}
+          render={({ field }) => (
+            <SimpleMDE {...field} placeholder='Post'></SimpleMDE>
+          )}
+        />
+
         <button disabled={isSubmitting} className='btn btn-primary'>
           {post ? 'Update' : 'Create'} Post {isSubmitting && <Spinner />}
         </button>

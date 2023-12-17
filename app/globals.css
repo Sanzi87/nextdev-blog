@@ -31,3 +31,13 @@ h1 {
   font-weight: bold;
   margin-bottom: 1rem;
 }
+
+.CodeMirror {
+  background: #10172A !important;
+  color: #C9C8CA !important;
+  font-size: 1.125rem !important;
+  
+}
+.editor-toolbar{
+  background: #10172A !important;
+}
