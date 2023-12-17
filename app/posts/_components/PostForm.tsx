@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
+import SelectUser from './SelectUser';
 
 type PostFormData = z.infer<typeof postSchema>;
 
@@ -88,13 +89,14 @@ const PostForm = ({ post }: { post?: Post }) => {
           className='input input-bordered input-lg w-full form-control'
         />
         <ErrorMessage>{errors.userEmail?.message}</ErrorMessage>
-        <input
+        <SelectUser />
+        {/* <input
           type='text'
           defaultValue={post?.userEmail}
           placeholder='User'
           {...register('userEmail')}
           className='input input-bordered input-lg w-full form-control'
-        />
+        /> */}
         <ErrorMessage>{errors.desc?.message}</ErrorMessage>
         <Controller
           name='desc'
