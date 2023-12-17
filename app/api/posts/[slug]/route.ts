@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {categorySchema} from "../../../validationSchemas";
+import {postSchema} from "../../../validationSchemas";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
@@ -14,27 +14,30 @@ export async function PATCH(
         return NextResponse.json({}, {status: 401});
 
     const body = await request.json();
-    const validation = categorySchema.safeParse(body);
+    const validation = postSchema.safeParse(body);
 
     if (!validation.success)
       return NextResponse.json(validation.error.format(), { status: 400 });
   
-    const category = await prisma.category.findUnique({
+    const post = await prisma.post.findUnique({
       where: { slug: params.slug },
     });
   
-    if (!category)
-      return NextResponse.json({ error: "Invalid category" }, { status: 404 });
+    if (!post)
+      return NextResponse.json({ error: "Invalid post" }, { status: 404 });
     
-    const updatedCategory = await prisma.category.update({
-      where: { slug: category.slug },
+    const updatedPost = await prisma.post.update({
+      where: { slug: post.slug },
       data: {
         title: body.title,
         slug: body.slug,
+        desc: body.desc,
+        catSlug: body.catSlug,
+        userEmail: body.userEmail
       },
     });
   
-    return NextResponse.json(updatedCategory);
+    return NextResponse.json(updatedPost);
   }
   
 export async function DELETE(
@@ -45,14 +48,14 @@ export async function DELETE(
     if(!session)
         return NextResponse.json({}, {status: 401});
       
-    const category = await prisma.category.findUnique({
+    const post = await prisma.post.findUnique({
       where: { slug: params.slug}
     });
-    if (!category)
-      return NextResponse.json ({ error: "Invalid category" }, { status: 404 });
+    if (!post)
+      return NextResponse.json ({ error: "Invalid post" }, { status: 404 });
 
-      await prisma.category.delete({
-        where: {slug: category.slug}
+      await prisma.post.delete({
+        where: {slug: post.slug}
       })
       return NextResponse.json({});
   }

@@ -4,32 +4,32 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { categorySchema } from '@/app/validationSchemas';
+import { postSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
-import { Category } from '@prisma/client';
+import { Post } from '@prisma/client';
 import Link from 'next/navigation';
 
-// interface CategoryForm {
+// interface PostForm {
 //   title: string;
 //   slug: string;
 // }
 
-type CategoryFormData = z.infer<typeof categorySchema>;
+type PostFormData = z.infer<typeof postSchema>;
 
 // interface Props {
-//   category?: Category
+//   post?: Post
 // }
 
-const CategoryForm = ({ category }: { category?: Category }) => {
+const PostForm = ({ post }: { post?: Post }) => {
   const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CategoryFormData>({
-    resolver: zodResolver(categorySchema),
+  } = useForm<PostFormData>({
+    resolver: zodResolver(postSchema),
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
@@ -37,9 +37,9 @@ const CategoryForm = ({ category }: { category?: Category }) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
-      if (category) await axios.patch('/api/categories/' + category.slug, data);
-      else await axios.post('/api/categories', data);
-      router.push('/categories');
+      if (post) await axios.patch('/api/posts/' + post.slug, data);
+      else await axios.post('/api/posts', data);
+      router.push('/posts');
       router.refresh();
     } catch (error) {
       setSubmitting(false);
@@ -72,7 +72,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <input
           type='text'
-          defaultValue={category?.title}
+          defaultValue={post?.title}
           placeholder='Title'
           {...register('title')}
           className='input input-bordered w-full max-w-xs form-control'
@@ -80,17 +80,40 @@ const CategoryForm = ({ category }: { category?: Category }) => {
         <ErrorMessage>{errors.slug?.message}</ErrorMessage>
         <input
           type='text'
-          defaultValue={category?.slug}
+          defaultValue={post?.slug}
           placeholder='Slug'
           {...register('slug')}
           className='input input-bordered w-full max-w-xs form-control'
         />
+        <ErrorMessage>{errors.desc?.message}</ErrorMessage>
+        <input
+          type='text'
+          defaultValue={post?.desc}
+          placeholder='Post'
+          {...register('desc')}
+          className='input input-bordered w-full max-w-xs form-control'
+        />
+        <ErrorMessage>{errors.catSlug?.message}</ErrorMessage>
+        <input
+          type='text'
+          defaultValue={post?.catSlug}
+          placeholder='Category'
+          {...register('catSlug')}
+          className='input input-bordered w-full max-w-xs form-control'
+        />
+        <ErrorMessage>{errors.catSlug?.message}</ErrorMessage>
+        <input
+          type='text'
+          defaultValue={post?.userEmail}
+          placeholder='User'
+          {...register('userEmail')}
+          className='input input-bordered w-full max-w-xs form-control'
+        />
         <button disabled={isSubmitting} className='btn btn-primary'>
-          {category ? 'Update' : 'Create'} Category{' '}
-          {isSubmitting && <Spinner />}
+          {post ? 'Update' : 'Create'} Post {isSubmitting && <Spinner />}
         </button>
         <button className='btn btn-outline p-0 ml-3'>
-          <a className='w-full p-4' href='/categories'>
+          <a className='w-full p-4' href='/posts'>
             Cancel
           </a>
         </button>
@@ -99,4 +122,4 @@ const CategoryForm = ({ category }: { category?: Category }) => {
   );
 };
 
-export default CategoryForm;
+export default PostForm;
