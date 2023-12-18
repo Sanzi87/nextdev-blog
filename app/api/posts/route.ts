@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
             slug: body.slug,
             desc: body.desc,
             catSlug: body.catSlug,
-            userEmail: body.userEmail
+            userId: body.userId
         },
     });
     return NextResponse.json(newPost, { status: 201 });

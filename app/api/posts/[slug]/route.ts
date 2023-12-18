@@ -33,7 +33,7 @@ export async function PATCH(
         slug: body.slug,
         desc: body.desc,
         catSlug: body.catSlug,
-        userEmail: body.userEmail
+        userId: body.userId
       },
     });
   

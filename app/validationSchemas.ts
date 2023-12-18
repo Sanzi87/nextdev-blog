@@ -13,7 +13,7 @@ const postSchema = z.object ({
     slug: z.string().min(5).max(255),
     desc: z.string().min(10).max(20000),
     catSlug: z.string().min(5).max(255),
-    userEmail: z.string().email().min(5).max(255)
+    userId: z.string().min(1).max(255)
 })
 
 export  {postSchema};

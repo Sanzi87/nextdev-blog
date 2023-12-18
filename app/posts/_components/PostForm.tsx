@@ -12,6 +12,7 @@ import { Controller, useForm } from 'react-hook-form';
 import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
 import SelectUser from './SelectUser';
+import SelectCategory from './SelectCategory';
 
 type PostFormData = z.infer<typeof postSchema>;
 
@@ -21,16 +22,44 @@ const PostForm = ({ post }: { post?: Post }) => {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<PostFormData>({
     resolver: zodResolver(postSchema),
+    defaultValues: { userId: post?.userId },
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(post?.userId || '');
+  const [selectedCatSlug, setSelectedCatSlug] = useState(post?.catSlug || '');
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const title = event.target.value;
+    const slug = generateSlug(title);
+    setValue('slug', slug);
+  };
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  };
+
+  const handleUserChange = (userId: string) => {
+    setSelectedUserId(userId);
+    setValue('userId', userId);
+  };
+
+  const handleCategoryChange = (catSlug: string) => {
+    setSelectedCatSlug(catSlug);
+    setValue('catSlug', catSlug);
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
+      data.userId = selectedUserId;
       if (post) await axios.patch('/api/posts/' + post.slug, data);
       else await axios.post('/api/posts', data);
       router.push('/posts');
@@ -69,6 +98,7 @@ const PostForm = ({ post }: { post?: Post }) => {
           defaultValue={post?.title}
           placeholder='Title'
           {...register('title')}
+          onChange={handleTitleChange}
           className='input input-bordered input-lg w-full form-control'
         />
         <ErrorMessage>{errors.slug?.message}</ErrorMessage>
@@ -81,22 +111,24 @@ const PostForm = ({ post }: { post?: Post }) => {
         />
 
         <ErrorMessage>{errors.catSlug?.message}</ErrorMessage>
-        <input
+        {/* <input
           type='text'
           defaultValue={post?.catSlug}
           placeholder='Category'
           {...register('catSlug')}
           className='input input-bordered input-lg w-full form-control'
-        />
-        <ErrorMessage>{errors.userEmail?.message}</ErrorMessage>
-        <SelectUser />
-        {/* <input
-          type='text'
-          defaultValue={post?.userEmail}
-          placeholder='User'
-          {...register('userEmail')}
-          className='input input-bordered input-lg w-full form-control'
         /> */}
+        <SelectCategory
+          selectedCategory={selectedCatSlug}
+          onChange={handleCategoryChange}
+        />
+
+        <ErrorMessage>{errors.userId?.message}</ErrorMessage>
+        <SelectUser
+          selectedUserId={selectedUserId}
+          onChange={handleUserChange}
+        />
+
         <ErrorMessage>{errors.desc?.message}</ErrorMessage>
         <Controller
           name='desc'
