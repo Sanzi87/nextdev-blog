@@ -59,9 +59,11 @@ model VerificationToken {
 }
 
 model Category {
-  id    Int    @id @default(autoincrement())
-  slug  String @unique
+  id    Int     @id @default(autoincrement())
+  slug  String  @unique
   title String
+  img   String  @default("no-image.webp")
+  desc  String?
   Posts Post[]
 }
 
@@ -71,7 +73,7 @@ model Post {
   slug      String    @unique
   title     String
   desc      String    @db.Text
-  img       String    @default("no-image")
+  img       String    @default("no-image.webp")
   views     Int       @default(0)
   catSlug   String
   cat       Category  @relation(fields: [catSlug], references: [slug])

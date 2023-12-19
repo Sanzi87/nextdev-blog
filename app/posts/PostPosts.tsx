@@ -1,8 +1,15 @@
 import { Post } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 
 const PostPosts = ({ post }: { post: Post }) => {
+  const publishedDate = new Intl.DateTimeFormat('se-SV', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(post.createdAt));
+
   return (
     <>
       <Image
@@ -13,7 +20,8 @@ const PostPosts = ({ post }: { post: Post }) => {
         src={`/nextdev-images/${post.img}`}
       />
       <h1>{post.title}</h1>
-      {post.desc}
+      <p>{publishedDate}</p>
+      <ReactMarkdown className='nextpost'>{post.desc}</ReactMarkdown>
     </>
   );
 };
