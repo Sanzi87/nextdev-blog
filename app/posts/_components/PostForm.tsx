@@ -11,8 +11,8 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
-import SelectUser from './SelectUser';
 import SelectCategory from './SelectCategory';
+import SelectUser from './SelectUser';
 
 type PostFormData = z.infer<typeof postSchema>;
 
@@ -26,7 +26,7 @@ const PostForm = ({ post }: { post?: Post }) => {
     formState: { errors },
   } = useForm<PostFormData>({
     resolver: zodResolver(postSchema),
-    defaultValues: { userId: post?.userId },
+    defaultValues: { userId: post?.userId, catSlug: post?.catSlug },
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
@@ -111,13 +111,6 @@ const PostForm = ({ post }: { post?: Post }) => {
         />
 
         <ErrorMessage>{errors.catSlug?.message}</ErrorMessage>
-        {/* <input
-          type='text'
-          defaultValue={post?.catSlug}
-          placeholder='Category'
-          {...register('catSlug')}
-          className='input input-bordered input-lg w-full form-control'
-        /> */}
         <SelectCategory
           selectedCategory={selectedCatSlug}
           onChange={handleCategoryChange}
@@ -127,6 +120,15 @@ const PostForm = ({ post }: { post?: Post }) => {
         <SelectUser
           selectedUserId={selectedUserId}
           onChange={handleUserChange}
+        />
+
+        <ErrorMessage>{errors.img?.message}</ErrorMessage>
+        <input
+          type='text'
+          defaultValue={post?.img}
+          placeholder='Image'
+          {...register('img')}
+          className='input input-bordered input-lg w-full form-control'
         />
 
         <ErrorMessage>{errors.desc?.message}</ErrorMessage>

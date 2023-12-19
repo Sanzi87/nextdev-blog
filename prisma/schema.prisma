@@ -70,8 +70,8 @@ model Post {
   createdAt DateTime  @default(now())
   slug      String    @unique
   title     String
-  desc      String
-  img       String?
+  desc      String    @db.Text
+  img       String    @default("no-image")
   views     Int       @default(0)
   catSlug   String
   cat       Category  @relation(fields: [catSlug], references: [slug])

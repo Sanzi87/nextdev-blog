@@ -33,7 +33,8 @@ export async function PATCH(
         slug: body.slug,
         desc: body.desc,
         catSlug: body.catSlug,
-        userId: body.userId
+        userId: body.userId,
+        img: body.img
       },
     });
   
