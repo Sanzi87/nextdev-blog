@@ -31,6 +31,8 @@ export async function PATCH(
       data: {
         title: body.title,
         slug: body.slug,
+        img: body.img,
+        desc: body.desc,
       },
     });
   

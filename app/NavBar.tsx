@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-import { AiFillBug } from 'react-icons/ai';
+import { AiFillBug, AiFillYoutube } from 'react-icons/ai';
 import classnames from 'classnames';
 import { useSession } from 'next-auth/react';
 
@@ -13,7 +13,13 @@ const NavBar = () => {
         <div className='flex justify-between'>
           <div className='flex items-center gap-3'>
             <Link href='/'>
-              <AiFillBug />
+              <img
+                alt={'NextDev Solutions Logo'}
+                width={100}
+                height={100}
+                style={{ maxWidth: '50px', height: 'auto' }}
+                src={`/NextDev-logo-xs.webp`}
+              />
             </Link>
           </div>
           <NavLinks />
@@ -33,9 +39,9 @@ const NavLinks = () => {
   ];
   return (
     <div className='flex items-center py-3'>
-      <ul className='navbar-links flex space-x-6'>
+      <ul className='navbar-links flex space-x-6 text-xl'>
         {links.map((link) => (
-          <li key={link.href}>
+          <li key={link.href} className='hover:text-white'>
             <Link
               className={classnames({
                 'active-link': link.href === currentPath,
@@ -56,13 +62,24 @@ const AuthStatus = () => {
   const { status, data: session } = useSession();
 
   if (status === 'loading')
-    return <div className='flex items-center py-3 w-10'></div>;
+    return (
+      <div className='flex items-center py-3 w-10'>
+        <Link target='_blank' href='https://youtube.com/@NextDevSolutions'>
+          <AiFillYoutube className='text-lg' />
+        </Link>
+      </div>
+    );
 
   if (status === 'unauthenticated')
     return (
       <div className='flex items-center py-3'>
         {status === 'unauthenticated' && (
-          <Link href='/api/auth/signin'>Log in</Link>
+          <>
+            <Link target='_blank' href='https://youtube.com/@NextDevSolutions'>
+              <AiFillYoutube className='text-3xl text-red-500' />
+            </Link>
+            <Link href='/api/auth/signin'>Log in</Link>
+          </>
         )}
       </div>
     );
@@ -83,6 +100,13 @@ const AuthStatus = () => {
         >
           <li className='pb-3'>{session!.user!.name}</li>
           <li>
+            <Link
+              className='justify-center py-3'
+              target='_blank'
+              href='https://youtube.com/@NextDevSolutions'
+            >
+              Youtube
+            </Link>
             <Link className='justify-center py-3' href='/api/auth/signout'>
               Log out
             </Link>

@@ -2,10 +2,11 @@ import prisma from '@/prisma/client';
 import { notFound } from 'next/navigation';
 import React from 'react';
 import EditPostButton from './EditPostButton';
-import PostPosts from '../PostPosts';
+import SinglePost from '../SinglePost';
 import DeletePostButton from './DeletePostButton';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/authOptions';
+import CategoriesModule from '@/app/components/CategoriesModule';
 
 interface Props {
   params: { slug: string };
@@ -21,7 +22,7 @@ const PostDetailPage = async ({ params }: Props) => {
   return (
     <div className='flex flex-col md:flex-row'>
       <div className=' md:basis-3/4 lg:basis-4/5 p-3'>
-        <PostPosts post={post} />
+        <SinglePost post={post} />
       </div>
       <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
         {session && (
@@ -30,6 +31,7 @@ const PostDetailPage = async ({ params }: Props) => {
             <DeletePostButton postSlug={post.slug} />
           </>
         )}
+        <CategoriesModule />
       </div>
     </div>
   );

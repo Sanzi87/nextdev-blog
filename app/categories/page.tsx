@@ -4,6 +4,7 @@ import Link from 'next/link';
 import EditCategoryButton from './[slug]/EditCategoryButton';
 import authOptions from '../auth/authOptions';
 import { getServerSession } from 'next-auth';
+import Image from 'next/image';
 
 interface Category {
   id: string;
@@ -31,9 +32,12 @@ const CategoriesPage = async () => {
           <div className='card w-96 glass m-4' key={category.id}>
             <figure>
               <Link href={`/categories/${category.slug}`}>
-                <img
-                  src='https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg'
-                  alt='car!'
+                <Image
+                  alt={category.slug}
+                  width={384}
+                  height={192}
+                  style={{ maxWidth: '100%', height: 'auto' }}
+                  src={`/nextdev-images/${category.img}`}
                 />
               </Link>
             </figure>
@@ -43,12 +47,8 @@ const CategoriesPage = async () => {
                   {category.title}
                 </Link>
               </h2>
-              <p className='text-center'>See all {category.title} posts.</p>
+              <p className='text-center'>{category.desc}</p>
               <div className='card-actions justify-center'>
-                {/* <button className='btn btn-primary'>
-                  <Link href={`/categories/${category.slug}/edit`}>Edit</Link>
-                </button> */}
-
                 {session && (
                   <>
                     <EditCategoryButton categorySlug={category.slug} />

@@ -137,7 +137,14 @@ const PostForm = ({ post }: { post?: Post }) => {
           control={control}
           defaultValue={post?.desc}
           render={({ field }) => (
-            <SimpleMDE {...field} placeholder='Post'></SimpleMDE>
+            <SimpleMDE
+              {...field}
+              placeholder='Post'
+              // options={{
+              //   showIcons: ['strikethrough', 'table', 'code'],
+              //   hideIcons: [],
+              // }}
+            ></SimpleMDE>
           )}
         />
 

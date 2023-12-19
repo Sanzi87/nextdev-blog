@@ -27,12 +27,26 @@ const CategoryForm = ({ category }: { category?: Category }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<CategoryFormData>({
     resolver: zodResolver(categorySchema),
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const title = event.target.value;
+    const slug = generateSlug(title);
+    setValue('slug', slug);
+  };
+
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '');
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -75,6 +89,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           defaultValue={category?.title}
           placeholder='Title'
           {...register('title')}
+          onChange={handleTitleChange}
           className='input input-bordered w-full input-lg form-control'
         />
         <ErrorMessage>{errors.slug?.message}</ErrorMessage>
@@ -84,6 +99,24 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           placeholder='Slug'
           {...register('slug')}
           className='input input-bordered w-full input-lg form-control'
+        />
+
+        <ErrorMessage>{errors.img?.message}</ErrorMessage>
+        <input
+          type='text'
+          defaultValue={category?.img}
+          placeholder='Image'
+          {...register('img')}
+          className='input input-bordered input-lg w-full form-control'
+        />
+
+        <ErrorMessage>{errors.desc?.message}</ErrorMessage>
+        <input
+          type='text'
+          defaultValue={category?.desc || ''}
+          placeholder='Description'
+          {...register('desc')}
+          className='input input-bordered input-lg w-full form-control'
         />
         <button disabled={isSubmitting} className='btn btn-primary'>
           {category ? 'Update' : 'Create'} Category{' '}

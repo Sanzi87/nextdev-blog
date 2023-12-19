@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
-const PostPosts = ({ post }: { post: Post }) => {
+const SinglePost = ({ post }: { post: Post }) => {
   const publishedDate = new Intl.DateTimeFormat('se-SV', {
     year: 'numeric',
     month: '2-digit',
@@ -26,4 +26,4 @@ const PostPosts = ({ post }: { post: Post }) => {
   );
 };
 
-export default PostPosts;
+export default SinglePost;
