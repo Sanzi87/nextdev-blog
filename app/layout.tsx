@@ -4,6 +4,7 @@ import { Lato } from 'next/font/google';
 import NavBar from './NavBar';
 import AuthProvider from './auth/Provider';
 import QueryClientProvider from './QueryClientProvider';
+import Footer from './components/Footer';
 
 const lato = Lato({ weight: '400', subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
             <main className='container mx-auto p-5'>{children}</main>
           </AuthProvider>
         </QueryClientProvider>
+        <Footer />
       </body>
     </html>
   );

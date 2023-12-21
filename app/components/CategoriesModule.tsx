@@ -14,7 +14,7 @@ const CategoriesModule = async () => {
             className='flex justify-center align-items  p-4 bg-slate-800 mb-5'
           >
             <h3 className='mb-0 mt-0 hover:text-white'>
-              <Link href={`/categories/${category.slug}`}>
+              <Link href={`/posts?category=${category.slug}`}>
                 {category.title}
               </Link>
             </h3>

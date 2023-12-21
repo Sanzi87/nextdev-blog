@@ -31,7 +31,7 @@ const CategoriesPage = async () => {
         {categories.map((category) => (
           <div className='card w-96 glass m-4' key={category.id}>
             <figure>
-              <Link href={`/categories/${category.slug}`}>
+              <Link href={`/posts?category=${category.slug}`}>
                 <Image
                   alt={category.slug}
                   width={384}
@@ -43,7 +43,7 @@ const CategoriesPage = async () => {
             </figure>
             <div className='card-body'>
               <h2 className='card-title justify-center'>
-                <Link href={`/categories/${category.slug}`}>
+                <Link href={`/posts?category=${category.slug}`}>
                   {category.title}
                 </Link>
               </h2>

@@ -11,9 +11,17 @@ import { getServerSession } from 'next-auth';
 //   email: string;
 // }
 
-const PostsPage = async () => {
+interface Props {
+  searchParams: { category: string };
+}
+
+const PostsPage = async ({ searchParams }: Props) => {
   const session = await getServerSession(authOptions);
-  const posts = await prisma.post.findMany();
+  const posts = await prisma.post.findMany({
+    where: {
+      catSlug: searchParams.category,
+    },
+  });
 
   return (
     <div>
