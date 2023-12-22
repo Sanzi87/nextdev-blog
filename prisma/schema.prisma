@@ -72,6 +72,7 @@ model Post {
   createdAt DateTime  @default(now())
   slug      String    @unique
   title     String
+  short     String
   desc      String    @db.Text
   img       String    @default("no-image.webp")
   views     Int       @default(0)

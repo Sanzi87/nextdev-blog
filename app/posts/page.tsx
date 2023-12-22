@@ -4,6 +4,9 @@ import Link from 'next/link';
 import EditPostButton from './[slug]/EditPostButton';
 import authOptions from '../auth/authOptions';
 import { getServerSession } from 'next-auth';
+import CategoriesModule from '../components/CategoriesModule';
+import Image from 'next/image';
+import FormattedDate from '../components/FormatedDate';
 
 // interface Category {
 //   id: string;
@@ -34,32 +37,42 @@ const PostsPage = async ({ searchParams }: Props) => {
           </button>
         )}
       </div>
-      <div className='flex flex-wrap justify-center mt-10'>
-        {posts.map((post) => (
-          <div className='card w-96 glass m-4' key={post.id}>
-            <figure>
-              <Link href={`/posts/${post.slug}`}>
-                <img
-                  src='https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg'
-                  alt='car!'
-                />
-              </Link>
-            </figure>
-            <div className='card-body'>
-              <h2 className='card-title justify-center'>
-                <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-              </h2>
-              <p className='text-center'>See all {post.title} posts.</p>
-              <div className='card-actions justify-center'>
-                {session && (
-                  <>
-                    <EditPostButton postSlug={post.slug} />
-                  </>
-                )}
+      <div className='flex flex-col md:flex-row'>
+        <div className='md:basis-3/4 lg:basis-4/5 p-3'>
+          {posts.map((post) => (
+            <div className='flex bg-neutral p-3 m-4' key={post.id}>
+              <figure className=' basis-2/5 p-3'>
+                <Link href={`/posts/${post.slug}`}>
+                  <Image
+                    alt={post.slug}
+                    width={1920}
+                    height={1080}
+                    src={`/nextdev-images/${post.img}`}
+                  />
+                </Link>
+              </figure>
+              <div className=' basis-3/5 p-3'>
+                <h2 className=''>
+                  <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+                </h2>
+                <p className=''>
+                  <FormattedDate ufdate={post.createdAt} />
+                </p>
+                <p className=''>{post.short}</p>
+                <div className='justify-center my-3'>
+                  {session && (
+                    <>
+                      <EditPostButton postSlug={post.slug} />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
+          <CategoriesModule />
+        </div>
       </div>
     </div>
   );

@@ -71,7 +71,7 @@ const PostForm = ({ post }: { post?: Post }) => {
   });
 
   return (
-    <div className='max-w-xl mx-auto'>
+    <div className='max-w-xl mx-auto my-10'>
       {error && (
         <div role='alert' className='alert alert-error mb-5'>
           <svg
@@ -90,7 +90,7 @@ const PostForm = ({ post }: { post?: Post }) => {
           <span>{error}</span>
         </div>
       )}
-
+      <h2 className='mb-8'>{post ? 'Update' : 'Create'} post</h2>
       <form className='space-y-4' onSubmit={onSubmit}>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <input
@@ -128,6 +128,14 @@ const PostForm = ({ post }: { post?: Post }) => {
           defaultValue={post?.img}
           placeholder='Image'
           {...register('img')}
+          className='input input-bordered input-lg w-full form-control'
+        />
+
+        <input
+          type='text'
+          defaultValue={post?.short}
+          placeholder='Short...'
+          {...register('short')}
           className='input input-bordered input-lg w-full form-control'
         />
 

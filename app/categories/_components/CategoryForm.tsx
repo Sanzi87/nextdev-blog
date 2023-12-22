@@ -62,7 +62,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
   });
 
   return (
-    <div className='max-w-xl mx-auto'>
+    <div className='max-w-xl mx-auto my-10'>
       {error && (
         <div role='alert' className='alert alert-error mb-5'>
           <svg
@@ -81,7 +81,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           <span>{error}</span>
         </div>
       )}
-
+      <h2 className='mb-8'>{category ? 'Update' : 'Create'} category</h2>
       <form className='space-y-3' onSubmit={onSubmit}>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <input

@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
         data: {
             title: body.title,
             slug: body.slug,
+            short: body.short,
             desc: body.desc,
             catSlug: body.catSlug,
             userId: body.userId
