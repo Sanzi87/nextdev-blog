@@ -5,6 +5,7 @@ import NavBar from './NavBar';
 import AuthProvider from './auth/Provider';
 import QueryClientProvider from './QueryClientProvider';
 import Footer from './components/Footer';
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 const lato = Lato({ weight: '400', subsets: ['latin'] });
 
@@ -21,6 +22,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={lato.className}>
+        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+        ) : null}
         <QueryClientProvider>
           <AuthProvider>
             <NavBar />
