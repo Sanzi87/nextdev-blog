@@ -14,7 +14,11 @@ interface Category {
 
 const CategoriesPage = async () => {
   const session = await getServerSession(authOptions);
-  const categories = await prisma.category.findMany();
+  const categories = await prisma.category.findMany({
+    orderBy: {
+      title: 'asc',
+    },
+  });
 
   return (
     <div>

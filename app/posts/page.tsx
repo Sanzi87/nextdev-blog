@@ -24,6 +24,9 @@ const PostsPage = async ({ searchParams }: Props) => {
     where: {
       catSlug: searchParams.category,
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 
   return (
