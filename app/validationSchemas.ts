@@ -20,4 +20,14 @@ const postSchema = z.object ({
     desc: z.string().min(10).max(20000),
 })
 
+
 export  {postSchema};
+
+const contactSchema = z.object ({
+    name: z.string().min(2, { message: 'Minimum 2 characters.' }).max(50, { message: 'Maximum 50 characters.' }).regex(/^[a-zåäöA-ZÅÄÖ\s]+$/,  { message: 'Invalid character.' }),
+    email: z.string().email().min(5, { message: 'Minimum 5 characters.' }).max(50, { message: 'Maximum 50 characters.' }),
+    subject: z.string().min(5, { message: 'Minimum 5 characters.' }).max(50, { message: 'Maximum 50 characters.' }).regex(/^[a-zåäöA-ZÅÄÖ0-9\s]+$/,  { message: 'Invalid character.' }),
+    message: z.string().min(5, { message: 'Minimum 5 characters.' }).max(500, { message: 'Maximum 500 characters.' }).regex(/^[a-zåäöA-ZÅÄÖ0-9.,?!-:@+():\\\s]+$/,  { message: 'Invalid character.' }),
+})
+
+export {contactSchema};
