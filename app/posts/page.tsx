@@ -16,19 +16,26 @@ import Pagination from '../components/Pagination';
 // }
 
 interface Props {
-  searchParams: { category: string };
+  searchParams: { category: string; page: string };
 }
 
 const PostsPage = async ({ searchParams }: Props) => {
   const session = await getServerSession(authOptions);
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
+  const where = { catSlug: searchParams.category };
+
   const posts = await prisma.post.findMany({
-    where: {
-      catSlug: searchParams.category,
-    },
+    where,
     orderBy: {
       createdAt: 'desc',
     },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
+
+  const postCount = await prisma.post.count({ where });
 
   return (
     <div>
@@ -73,7 +80,11 @@ const PostsPage = async ({ searchParams }: Props) => {
               </div>
             </div>
           ))}
-          <Pagination itemCount={100} pageSize={10} currentPage={1} />
+          <Pagination
+            itemCount={postCount}
+            pageSize={pageSize}
+            currentPage={page}
+          />
         </div>
         <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
           <CategoriesModule />
