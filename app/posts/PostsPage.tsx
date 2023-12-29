@@ -1,14 +1,15 @@
+import React from 'react';
 import prisma from '@/prisma/client';
+import Link from 'next/link';
+import authOptions from '../auth/authOptions';
+import { getServerSession } from 'next-auth';
 import CategoriesModule from '../components/CategoriesModule';
-import CreatePostModule from '../components/CreatePostModule';
 import Pagination from '../components/Pagination';
-import PostList, { PostQuery } from './PostList';
+import PostList from './PostList';
+import { Props } from './page';
 
-interface Props {
-  searchParams: PostQuery;
-}
-
-const PostsPage = async ({ searchParams }: Props) => {
+export const PostsPage = async ({ searchParams }: Props) => {
+  const session = await getServerSession(authOptions);
   const page = parseInt(searchParams.page) || 1;
   const pageSize = 10;
 
@@ -37,14 +38,18 @@ const PostsPage = async ({ searchParams }: Props) => {
           />
         </div>
         <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
-          <CreatePostModule />
+          <div className='mb-5 text-center'>
+            {session && (
+              <button className='btn btn-primary p-0'>
+                <Link className='w-full p-4' href='/posts/new'>
+                  CREATE POST
+                </Link>
+              </button>
+            )}
+          </div>
           <CategoriesModule />
         </div>
       </div>
     </div>
   );
 };
-
-export const dynamic = 'force-dynamic';
-
-export default PostsPage;
