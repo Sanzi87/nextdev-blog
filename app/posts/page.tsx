@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth';
 import CategoriesModule from '../components/CategoriesModule';
 import Image from 'next/image';
 import FormattedDate from '../components/FormatedDate';
+import Pagination from '../components/Pagination';
 
 // interface Category {
 //   id: string;
@@ -72,6 +73,7 @@ const PostsPage = async ({ searchParams }: Props) => {
               </div>
             </div>
           ))}
+          <Pagination itemCount={100} pageSize={10} currentPage={1} />
         </div>
         <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
           <CategoriesModule />
