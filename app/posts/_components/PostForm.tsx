@@ -13,6 +13,8 @@ import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
 import SelectCategory from './SelectCategory';
 import SelectUser from './SelectUser';
+import SelectStatus from './SelectStatus';
+import SelectFeatured from './SelectFeatured';
 
 type PostFormData = z.infer<typeof postSchema>;
 
@@ -26,12 +28,21 @@ const PostForm = ({ post }: { post?: Post }) => {
     formState: { errors },
   } = useForm<PostFormData>({
     resolver: zodResolver(postSchema),
-    defaultValues: { userId: post?.userId, catSlug: post?.catSlug },
+    defaultValues: {
+      userId: post?.userId,
+      catSlug: post?.catSlug,
+      status: post?.status,
+      featured: post?.featured,
+    },
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(post?.userId || '');
   const [selectedCatSlug, setSelectedCatSlug] = useState(post?.catSlug || '');
+  const [selectedStatus, setSelectedStatus] = useState(post?.status || '');
+  const [selectedFeatured, setSelectedFeatured] = useState(
+    post?.featured || ''
+  );
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const title = event.target.value;
@@ -54,6 +65,16 @@ const PostForm = ({ post }: { post?: Post }) => {
   const handleCategoryChange = (catSlug: string) => {
     setSelectedCatSlug(catSlug);
     setValue('catSlug', catSlug);
+  };
+
+  const handlerStatusChange = (status: string) => {
+    setSelectedStatus(status);
+    setValue('status', status);
+  };
+
+  const handlerFeaturedChange = (featured: string) => {
+    setSelectedFeatured(featured);
+    setValue('featured', featured);
   };
 
   const onSubmit = handleSubmit(async (data) => {
@@ -120,6 +141,18 @@ const PostForm = ({ post }: { post?: Post }) => {
         <SelectUser
           selectedUserId={selectedUserId}
           onChange={handleUserChange}
+        />
+
+        <ErrorMessage>{errors.status?.message}</ErrorMessage>
+        <SelectStatus
+          selectedStatus={selectedStatus}
+          onChange={handlerStatusChange}
+        />
+
+        <ErrorMessage>{errors.featured?.message}</ErrorMessage>
+        <SelectFeatured
+          selectedFeatured={selectedFeatured}
+          onChange={handlerFeaturedChange}
         />
 
         <ErrorMessage>{errors.img?.message}</ErrorMessage>

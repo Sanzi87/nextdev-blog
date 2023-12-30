@@ -15,8 +15,10 @@ const postSchema = z.object ({
     slug: z.string().min(5).max(191),
     catSlug: z.string().min(5).max(191),
     userId: z.string().min(1).max(191),
+    featured: z.string().min(1).max(1),
+    status: z.string().min(1).max(1),
     img: z.string().max(191),
-    short: z.string().max(191),
+    short: z.string().min(10).max(400),
     desc: z.string().min(10).max(20000),
 })
 

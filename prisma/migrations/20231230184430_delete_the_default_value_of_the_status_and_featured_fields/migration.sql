@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `post` ALTER COLUMN `featured` DROP DEFAULT,
+    ALTER COLUMN `status` DROP DEFAULT;

@@ -34,7 +34,10 @@ export async function POST(request: NextRequest) {
             short: body.short,
             desc: body.desc,
             catSlug: body.catSlug,
-            userId: body.userId
+            status: body.status,
+            featured: body.featured,
+            userId: body.userId,
+            img: body.img
         },
     });
     return NextResponse.json(newPost, { status: 201 });

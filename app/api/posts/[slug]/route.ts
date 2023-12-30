@@ -31,8 +31,11 @@ export async function PATCH(
       data: {
         title: body.title,
         slug: body.slug,
+        short: body.short,
         desc: body.desc,
         catSlug: body.catSlug,
+        status: body.status,
+        featured: body.featured,
         userId: body.userId,
         img: body.img
       },

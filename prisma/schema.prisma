@@ -77,6 +77,8 @@ model Post {
   img       String    @default("no-image.webp")
   views     Int       @default(0)
   catSlug   String
+  featured  String    @db.VarChar(1)
+  status    String    @db.VarChar(1)
   cat       Category  @relation(fields: [catSlug], references: [slug])
   userId    String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
