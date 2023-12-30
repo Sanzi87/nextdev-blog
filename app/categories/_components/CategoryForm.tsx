@@ -10,6 +10,7 @@ import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 import { Category } from '@prisma/client';
 import Link from 'next/navigation';
+import DeleteCategoryButton from '../[slug]/DeleteCategoryButton';
 
 // interface CategoryForm {
 //   title: string;
@@ -81,7 +82,12 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           <span>{error}</span>
         </div>
       )}
-      <h2 className='mb-8'>{category ? 'Update' : 'Create'} category</h2>
+      <div className='flex justify-between'>
+        <h2 className='mb-8'>{category ? 'Update' : 'Create'} category </h2>
+        {category?.slug && (
+          <DeleteCategoryButton categorySlug={category.slug} />
+        )}
+      </div>
       <form className='space-y-3' onSubmit={onSubmit}>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <input
@@ -122,7 +128,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           {category ? 'Update' : 'Create'} Category{' '}
           {isSubmitting && <Spinner />}
         </button>
-        <button className='btn btn-outline p-0 ml-3'>
+        <button className='btn btn-outline p-0 mx-3'>
           <a className='w-full p-4' href='/categories'>
             Cancel
           </a>
