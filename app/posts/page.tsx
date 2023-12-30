@@ -2,17 +2,26 @@ import prisma from '@/prisma/client';
 import CategoriesModule from '../components/CategoriesModule';
 import CreatePostModule from '../components/CreatePostModule';
 import Pagination from '../components/Pagination';
-import PostList, { PostQuery } from '../components/PostList';
+import PostList, { PostQuery } from './PostList';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/authOptions';
 
-export interface Props {
+interface Props {
   searchParams: PostQuery;
 }
 
 const PostsPage = async ({ searchParams }: Props) => {
   const page = parseInt(searchParams.page) || 1;
   const pageSize = 10;
+  const session = await getServerSession(authOptions);
 
-  const where = { catSlug: searchParams.category };
+  let where: { status: string | undefined; catSlug: string } = {
+    status: '1',
+    catSlug: searchParams.category,
+  };
+  if (session) {
+    where = { status: undefined, catSlug: searchParams.category };
+  }
 
   const posts = await prisma.post.findMany({
     where,
@@ -28,6 +37,7 @@ const PostsPage = async ({ searchParams }: Props) => {
   return (
     <div className='flex flex-col lg:flex-row'>
       <div className='md:basis-3/4 lg:basis-4/5 p-3'>
+        <PostList searchParams={searchParams} posts={posts} />
         <PostList searchParams={searchParams} posts={posts} />
         <Pagination
           itemCount={postCount}

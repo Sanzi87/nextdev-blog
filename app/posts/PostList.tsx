@@ -3,8 +3,8 @@ import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
 import authOptions from '../auth/authOptions';
-import FormattedDate from './FormatedDate';
-import EditPostButton from '../posts/[slug]/EditPostButton';
+import FormattedDate from '../components/FormatedDate';
+import EditPostButton from './[slug]/EditPostButton';
 
 export interface PostQuery {
   category: string;
@@ -46,6 +46,9 @@ const PostList = async ({ searchParams, posts }: Props) => {
               <span className='bg-base-100 uppercase font-bold p-1 ml-3'>
                 {post.catSlug}
               </span>
+              {post.status === '0' && (
+                <span className='bg-red-900 uppercase'>Unpublished</span>
+              )}
             </p>
             <p className=''>{post.short}</p>
             <div className='justify-center my-3'>

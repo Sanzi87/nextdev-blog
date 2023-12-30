@@ -5,8 +5,13 @@ import React from 'react';
 import FormattedDate from './components/FormatedDate';
 import EditPostButton from './posts/[slug]/EditPostButton';
 
-const LatestPosts = async () => {
+interface Props {
+  featured?: string;
+}
+
+const LatestPosts = async ({ featured }: Props) => {
   const posts = await prisma.post.findMany({
+    where: { status: '1', featured },
     orderBy: { createdAt: 'desc' },
     take: 3,
   });

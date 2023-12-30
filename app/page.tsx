@@ -1,4 +1,4 @@
-import LatestPosts from './LatestPosts';
+import LatestPosts from './PostsComponent';
 import CreatePostModule from './components/CreatePostModule';
 import CategoriesModule from './components/CategoriesModule';
 
@@ -8,7 +8,7 @@ export default function Home() {
       <div className='md:basis-3/4 lg:basis-4/5 p-3'>
         <h1>NextDev Solution Blog</h1>
         <h2>Featured posts</h2>
-        <LatestPosts />
+        <LatestPosts featured={'1'} />
         <h2>Recent posts</h2>
         <LatestPosts />
       </div>
