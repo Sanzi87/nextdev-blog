@@ -28,7 +28,7 @@ export default function RootLayout({
         <QueryClientProvider>
           <AuthProvider>
             <NavBar />
-            <main className='container min-h-screen mx-auto p-5'>
+            <main className='container min-h-screen mx-auto p-1 md:p-10'>
               {children}
             </main>
           </AuthProvider>

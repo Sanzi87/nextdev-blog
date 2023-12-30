@@ -1,13 +1,20 @@
+import authOptions from '@/app/auth/authOptions';
+import { getServerSession } from 'next-auth';
 import Link from 'next/link';
 import React from 'react';
 
-const EditPostButton = ({ postSlug }: { postSlug: string }) => {
+const EditPostButton = async ({ postSlug }: { postSlug: string }) => {
+  const session = await getServerSession(authOptions);
   return (
-    <button className='btn btn-primary p-0'>
-      <Link className='w-full p-4' href={`/posts/${postSlug}/edit`}>
-        Edit
-      </Link>
-    </button>
+    <>
+      {session && (
+        <button className='btn btn-primary p-0'>
+          <Link className='w-full p-4' href={`/posts/${postSlug}/edit`}>
+            Edit
+          </Link>
+        </button>
+      )}
+    </>
   );
 };
 

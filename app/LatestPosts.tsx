@@ -1,31 +1,26 @@
-import { Post } from '@prisma/client';
-import { getServerSession } from 'next-auth';
-import Image from 'next/image';
+import prisma from '@/prisma/client';
 import Link from 'next/link';
-import authOptions from '../auth/authOptions';
-import FormattedDate from '../components/FormatedDate';
-import EditPostButton from './[slug]/EditPostButton';
+import Image from 'next/image';
+import React from 'react';
+import FormattedDate from './components/FormatedDate';
+import EditPostButton from './posts/[slug]/EditPostButton';
 
-export interface PostQuery {
-  category: string;
-  page: string;
-}
-
-interface Props {
-  searchParams: PostQuery;
-  posts: Post[];
-}
-
-const PostList = async ({ searchParams, posts }: Props) => {
-  const session = await getServerSession(authOptions);
-
+const LatestPosts = async () => {
+  const posts = await prisma.post.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 3,
+  });
   return (
     <>
       {posts.map((post) => (
-        <div className='flex bg-neutral p-3 m-4' key={post.id}>
+        <div
+          className='flex flex-col text-center md:text-left md:flex-row bg-neutral p-3 m-4'
+          key={post.id}
+        >
           <figure className=' basis-2/5 p-3'>
             <Link href={`/posts/${post.slug}`}>
               <Image
+                className='object-cover h-full w-full'
                 alt={post.slug}
                 width={1920}
                 height={1080}
@@ -45,11 +40,7 @@ const PostList = async ({ searchParams, posts }: Props) => {
             </p>
             <p className=''>{post.short}</p>
             <div className='justify-center my-3'>
-              {session && (
-                <>
-                  <EditPostButton postSlug={post.slug} />
-                </>
-              )}
+              <EditPostButton postSlug={post.slug} />
             </div>
           </div>
         </div>
@@ -58,4 +49,4 @@ const PostList = async ({ searchParams, posts }: Props) => {
   );
 };
 
-export default PostList;
+export default LatestPosts;
