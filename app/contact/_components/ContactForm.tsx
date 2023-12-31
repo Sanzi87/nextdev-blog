@@ -5,17 +5,19 @@ import { contactSchema } from '@/app/validationSchemas';
 import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
 const ContactForm = () => {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
@@ -25,6 +27,26 @@ const ContactForm = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
+
+      const res = await axios.post('/api/contact', data);
+      if (res.data.status === 201) {
+        reset();
+
+        toast.success(res.data.message, {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      } else {
+        toast.error(res.data.message);
+      }
+
+      setSubmitting(false);
     } catch (error) {
       setSubmitting(false);
       setError('An unexpected error occurred.');
@@ -87,6 +109,20 @@ const ContactForm = () => {
           Send {isSubmitting && <Spinner />}
         </button>
       </form>
+      <div>
+        <ToastContainer
+          position='top-center'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+        />
+      </div>
     </div>
   );
 };

@@ -21,9 +21,10 @@ const PostDetailPage = async ({ params }: Props) => {
 
   return (
     <div className='flex flex-col md:flex-row'>
-      <div className='md:basis-3/4 lg:basis-4/5 p-3'>
+      <article className='md:basis-3/4 lg:basis-4/5 p-3'>
         <SinglePost post={post} />
-      </div>
+      </article>
+
       <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
         {session && (
           <>
