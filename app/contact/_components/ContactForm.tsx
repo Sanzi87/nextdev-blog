@@ -9,8 +9,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Script from 'next/script';
 
 type ContactFormData = z.infer<typeof contactSchema>;
+const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITEKEY;
 
 const ContactForm = () => {
   const {
@@ -28,7 +30,20 @@ const ContactForm = () => {
     try {
       setSubmitting(true);
 
-      const res = await axios.post('/api/contact', data);
+      // Use grecaptcha to generate a token
+      const token: string = await new Promise((resolve) => {
+        grecaptcha.ready(() => {
+          grecaptcha.execute(SITE_KEY!, { action: 'submit' }).then(
+            (response: string) => resolve(response),
+            (error: unknown) => {
+              console.error('reCAPTCHA error:', error);
+              resolve('');
+            }
+          );
+        });
+      });
+
+      const res = await axios.post('/api/contact', { ...data, token });
       if (res.data.status === 201) {
         reset();
 
@@ -74,6 +89,9 @@ const ContactForm = () => {
         </div>
       )}
       <h1 className='mb-8'>Contact</h1>
+      <Script
+        src={`https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`}
+      />
       <form className='space-y-4' onSubmit={onSubmit}>
         <ErrorMessage>{errors.name?.message}</ErrorMessage>
         <input

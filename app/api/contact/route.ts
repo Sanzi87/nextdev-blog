@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { transporter,  } from './nodemailer';
 import { contactSchema } from "@/app/validationSchemas";
+import axios from "axios";
 
 export async function POST(request: NextRequest) { 
 
@@ -12,6 +13,17 @@ export async function POST(request: NextRequest) {
 
         if (!validation.success)
         return NextResponse.json(validation.error.format(), { status: 400 });
+
+        // Validate reCAPTCHA token
+        const recaptchaSecretKey = process.env.RECAPTCHA_SECRETKEY;
+        const recaptchaResponse = body.token;
+        
+        const recaptchaVerification = await axios.post(
+            `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${recaptchaResponse}`
+        );
+
+        if (!recaptchaVerification.data.success)
+            return NextResponse.json({ message: "reCAPTCHA verification failed", status: 400 });
 
         const mailOptions = {
             from,

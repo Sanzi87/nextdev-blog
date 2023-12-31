@@ -11,6 +11,7 @@ const footerLinks = [
   { label: 'Categories', href: '/categories' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
+  { label: 'Privacy Policy', href: '/privacy-policy' },
 ];
 const socialLinks = [
   { label: 'Youtube', href: 'https://youtube.com' },
@@ -74,11 +75,13 @@ const Footer = () => {
             </div>
           </div>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-            fuga error dolore totam delectus mollitia ipsam quaerat. Adipisci,
-            asperiores unde! Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Impedit fuga error dolore totam delectus mollitia ipsam
-            quaerat. Adipisci, asperiores unde!
+            Discover the nuances of web development with NextDev Solutions, your
+            hub for insights into HTML, CSS, JavaScript, TypeScript, PHP,
+            Python, React, Next JS, and Django. Uncover the secrets of various
+            technologies through comprehensive blog posts, practical tips, and
+            hands-on code demos. Join us on a dynamic journey through the realms
+            of Next JS, React, and JavaScript, as we explore and evolve in the
+            ever-changing world of web development.
           </p>
         </div>
         <div className='md:basis-1/5 lg:basis-1/6'>
