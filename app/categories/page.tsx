@@ -24,7 +24,7 @@ const CategoriesPage = async () => {
     <div>
       <div className='mb-5'>
         {session && (
-          <button className='btn btn-primary p-0'>
+          <button className='rounded-md btn btn-primary p-0'>
             <Link className='w-full p-4' href='/categories/new'>
               New Category
             </Link>
@@ -33,10 +33,11 @@ const CategoriesPage = async () => {
       </div>
       <div className='flex flex-wrap justify-center mt-10'>
         {categories.map((category) => (
-          <div className='card w-96 glass m-4' key={category.id}>
+          <div className='rounded-[16px] w-96 card-glass m-4' key={category.id}>
             <figure>
               <Link href={`/posts?category=${category.slug}`}>
                 <Image
+                  className='rounded-[16px]'
                   alt={category.slug}
                   width={384}
                   height={192}
