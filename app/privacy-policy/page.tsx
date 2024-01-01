@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import React from 'react';
 
 const PrivacyPolicyPage = () => {
@@ -91,3 +92,9 @@ const PrivacyPolicyPage = () => {
 };
 
 export default PrivacyPolicyPage;
+
+export const metadata: Metadata = {
+  title: 'NextDev Solutions Privacy Policy: Your Data Security Matters',
+  description:
+    'Read the privacy policy of NextDev Solutions. Learn how we handle your data with care, our commitment to security.',
+};

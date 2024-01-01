@@ -5,6 +5,7 @@ import Pagination from '../components/Pagination';
 import PostList, { PostQuery } from './PostList';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/authOptions';
+import { Metadata } from 'next';
 
 interface Props {
   searchParams: PostQuery;
@@ -55,3 +56,9 @@ const PostsPage = async ({ searchParams }: Props) => {
 export const dynamic = 'force-dynamic';
 
 export default PostsPage;
+
+export const metadata: Metadata = {
+  title: 'Explore Web Development Posts at NextDev Solutions',
+  description:
+    'Dive into a treasure trove of web development posts at NextDev Solutions. From tutorials and tips to code demos, stay informed and inspired in the dynamic world of HTML, CSS, JavaScript, React, Next JS, and beyond.',
+};

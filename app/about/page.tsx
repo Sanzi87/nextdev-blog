@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import React from 'react';
 
 const AboutPage = () => {
@@ -65,3 +66,9 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
+
+export const metadata: Metadata = {
+  title: "About NextDev Solutions: Alexander's Web Development Journey",
+  description:
+    "Learn about NextDev Solutions and Alexander's passion for web development since 2011. Discover insights, experiences, and expertise in HTML, CSS, JavaScript, React, Next JS, PHP, Python, and more.",
+};

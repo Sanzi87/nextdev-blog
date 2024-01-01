@@ -1,6 +1,7 @@
 import LatestPosts from './PostsComponent';
 import CreatePostModule from './components/CreatePostModule';
 import CategoriesModule from './components/CategoriesModule';
+import { Metadata } from 'next';
 
 export default function Home() {
   return (
@@ -19,3 +20,9 @@ export default function Home() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: 'NexDev Solution Blog - Explore Web Development',
+  description:
+    'Explore the world of web development with NextDev Solutions. Dive into insightful blog posts covering HTML, CSS, JavaScript, React, Next JS, PHP, Python, and more. Uncover practical tips, code demos, and stay updated on the latest trends.',
+};

@@ -5,6 +5,7 @@ import EditCategoryButton from './[slug]/EditCategoryButton';
 import authOptions from '../auth/authOptions';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
 interface Category {
   id: string;
@@ -71,3 +72,9 @@ const CategoriesPage = async () => {
 export const dynamic = 'force-dynamic';
 
 export default CategoriesPage;
+
+export const metadata: Metadata = {
+  title: 'Explore Web Development Categories at NextDev Solutions',
+  description:
+    'Browse through diverse web development categories at NextDev Solutions. From HTML and CSS to JavaScript, React, Next JS, PHP, Python, and more, find insights, tips in every category.',
+};

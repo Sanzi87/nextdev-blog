@@ -37,5 +37,13 @@ const PostDetailPage = async ({ params }: Props) => {
     </div>
   );
 };
+export async function generateMetadata({ params }: Props) {
+  const post = await prisma.post.findUnique({ where: { slug: params.slug } });
+
+  return {
+    title: post?.title + ' - NextDev Solutions',
+    description: post?.short,
+  };
+}
 
 export default PostDetailPage;
