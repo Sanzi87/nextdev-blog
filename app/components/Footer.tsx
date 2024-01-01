@@ -33,9 +33,9 @@ interface FooterNavProps {
 const FooterNavLinks = ({ links, header, blank = false }: FooterNavProps) => {
   const currentPath = usePathname();
   return (
-    <div className='flex flex-col gap-2'>
-      <h2>{header}</h2>
-      <ul className=''>
+    <div className='flex flex-col gap-2 mx-5'>
+      <h2 className='my-0'>{header}</h2>
+      <ul className='text-2xl  leading-10 md:text-xl md:leading-8'>
         {links.map((link) => (
           <li key={link.href} className='hover:text-white'>
             <Link
@@ -71,10 +71,10 @@ const Footer = () => {
               />
             </div>
             <div className='flex items-center'>
-              <h2 className=''>NextDev Solutions</h2>
+              <h2 className='my-0'>NextDev Solutions</h2>
             </div>
           </div>
-          <p>
+          <p className='text-justify'>
             Discover the nuances of web development with NextDev Solutions, your
             hub for insights into HTML, CSS, JavaScript, TypeScript, PHP,
             Python, React, Next JS, and Django. Uncover the secrets of various

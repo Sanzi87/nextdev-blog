@@ -3,7 +3,7 @@ import React from 'react';
 
 const PrivacyPolicyPage = () => {
   return (
-    <article className='px-10 pb-10 max-w-3xl mx-auto article-page'>
+    <article className='px-10 pt-5 pb-10 max-w-3xl mx-auto article-page'>
       <h1>Privacy Policy for NextDev Solutions</h1>
       <p className='mb-5'>Effective Date: 2024-01-01</p>
       <p>

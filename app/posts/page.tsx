@@ -38,6 +38,10 @@ const PostsPage = async ({ searchParams }: Props) => {
   return (
     <div className='flex flex-col lg:flex-row'>
       <div className='md:basis-3/4 lg:basis-4/5 p-3'>
+        <h1>
+          Blog posts{' '}
+          {searchParams.category && <span> - {searchParams.category}</span>}
+        </h1>
         <PostList searchParams={searchParams} posts={posts} />
         <Pagination
           itemCount={postCount}

@@ -23,7 +23,7 @@ const PostList = async ({ searchParams, posts }: Props) => {
     <>
       {posts.map((post) => (
         <div
-          className='flex flex-col text-center md:text-left md:flex-row bg-neutral p-3 m-4'
+          className='flex flex-col text-center md:text-left md:flex-row bg-neutral p-3 my-4'
           key={post.id}
         >
           <figure className=' basis-2/5 p-3'>

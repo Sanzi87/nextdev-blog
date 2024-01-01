@@ -22,16 +22,18 @@ const CategoriesPage = async () => {
   });
 
   return (
-    <div>
-      <div className='mb-5'>
-        {session && (
-          <button className='rounded-md btn btn-primary p-0'>
+    <div className=''>
+      {session && (
+        <div className='mb-5 flex justify-center p-5 m-10'>
+          <button className='rounded-md btn btn-primary p-0 '>
             <Link className='w-full p-4' href='/categories/new'>
               New Category
             </Link>
           </button>
-        )}
-      </div>
+        </div>
+      )}
+
+      <h1 className='text-center'>Categories</h1>
       <div className='flex flex-wrap justify-center mt-10'>
         {categories.map((category) => (
           <div className='rounded-[16px] w-96 card-glass m-4' key={category.id}>

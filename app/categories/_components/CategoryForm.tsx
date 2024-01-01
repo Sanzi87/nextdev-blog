@@ -9,19 +9,9 @@ import { z } from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 import { Category } from '@prisma/client';
-import Link from 'next/navigation';
 import DeleteCategoryButton from '../[slug]/DeleteCategoryButton';
 
-// interface CategoryForm {
-//   title: string;
-//   slug: string;
-// }
-
 type CategoryFormData = z.infer<typeof categorySchema>;
-
-// interface Props {
-//   category?: Category
-// }
 
 const CategoryForm = ({ category }: { category?: Category }) => {
   const router = useRouter();
