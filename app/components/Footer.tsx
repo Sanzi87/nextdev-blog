@@ -14,9 +14,9 @@ const footerLinks = [
   { label: 'Privacy Policy', href: '/privacy-policy' },
 ];
 const socialLinks = [
-  { label: 'Youtube', href: 'https://youtube.com' },
-  { label: 'Facebook', href: 'https://facebook.com' },
-  { label: 'Instagram', href: 'https://instagram.com' },
+  { label: 'Youtube', href: 'https://youtube.com/@NextDevSolutions' },
+  { label: 'Facebook', href: 'https://facebook.com/' },
+  { label: 'Instagram', href: 'https://instagram.com/nextdev-solutions' },
   { label: 'Twitter', href: 'https://twitter.com' },
   { label: 'TikTok', href: 'https://tiktok.com' },
 ];

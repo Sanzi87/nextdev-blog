@@ -151,7 +151,7 @@ const MobileMenu = ({ menuOpen, closeMenu }: MenuProps) => {
               </Link>
               <Link
                 target='_blank'
-                href='https://instagram.com/@NextDevSolutions'
+                href='https://instagram.com/nextdevsolutions'
               >
                 <AiFillInstagram className='text-3xl text-white hover:text-fuchsia-800 duration-500' />
               </Link>
@@ -195,10 +195,7 @@ const SocMedia = () => {
             <Link target='_blank' href='https://youtube.com/@NextDevSolutions'>
               <AiFillYoutube className='text-3xl text-white hover:text-red-500' />
             </Link>
-            <Link
-              target='_blank'
-              href='https://instagram.com/@NextDevSolutions'
-            >
+            <Link target='_blank' href='https://instagram.com/nextdevsolutions'>
               <AiFillInstagram className='text-3xl text-white hover:text-fuchsia-800' />
             </Link>
           </>
@@ -236,7 +233,7 @@ const SocMedia = () => {
             <Link
               className='justify-center py-3'
               target='_blank'
-              href='https://instagram.com/'
+              href='https://instagram.com/nextdevsolutions'
             >
               NextDev Istagram
             </Link>
