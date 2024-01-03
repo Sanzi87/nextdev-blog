@@ -1,8 +1,8 @@
 import { Post } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import FormattedDate from '../components/FormatedDate';
+import MarkdownBlock from './_components/MarkdownBlock';
 
 const SinglePost = ({ post }: { post: Post }) => {
   return (
@@ -18,7 +18,9 @@ const SinglePost = ({ post }: { post: Post }) => {
       <p>
         <FormattedDate ufdate={post.createdAt} />
       </p>
-      <ReactMarkdown className='nextpost'>{post.desc}</ReactMarkdown>
+      <div className='nextpost'>
+        <MarkdownBlock>{post.desc}</MarkdownBlock>
+      </div>
     </>
   );
 };
