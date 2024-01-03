@@ -23,7 +23,7 @@ const CategoriesPage = async () => {
 
   return (
     <div className=''>
-      {session && (
+      {session?.user.role === 'NEXTADMIN' && (
         <div className='mb-5 flex justify-center p-5 m-10'>
           <button className='rounded-md btn btn-primary p-0 '>
             <Link className='w-full p-4' href='/categories/new'>
@@ -57,7 +57,7 @@ const CategoriesPage = async () => {
               </h2>
               <p className='text-center'>{category.desc}</p>
               <div className='card-actions justify-center'>
-                {session && (
+                {session?.user.role === 'NEXTADMIN' && (
                   <>
                     <EditCategoryButton categorySlug={category.slug} />
                   </>

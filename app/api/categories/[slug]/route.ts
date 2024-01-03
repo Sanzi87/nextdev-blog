@@ -10,7 +10,7 @@ export async function PATCH(
   ) {
     
     const session = await getServerSession(authOptions);
-    if(!session)
+    if(session?.user.role !== 'NEXTADMIN')
         return NextResponse.json({}, {status: 401});
 
     const body = await request.json();
@@ -44,7 +44,7 @@ export async function DELETE(
   {params}: {params: {slug: string}}) {
     
     const session = await getServerSession(authOptions);
-    if(!session)
+    if(session?.user.role !== 'NEXTADMIN')
         return NextResponse.json({}, {status: 401});
       
     const category = await prisma.category.findUnique({

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions);
-    if(!session)
+    if(session?.user.role !== 'NEXTADMIN')
         return NextResponse.json({}, {status: 401});
     const body = await request.json();
     const validation = postSchema.safeParse(body);

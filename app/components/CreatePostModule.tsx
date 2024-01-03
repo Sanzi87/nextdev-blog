@@ -7,7 +7,7 @@ const CreatePostModule = async () => {
   const session = await getServerSession(authOptions);
   return (
     <div className='mb-5 text-center'>
-      {session && (
+      {session?.user.role === 'NEXTADMIN' && (
         <button className='btn btn-primary p-0'>
           <Link className='w-full p-4' href='/posts/new'>
             CREATE POST

@@ -20,7 +20,7 @@ const PostsPage = async ({ searchParams }: Props) => {
     status: '1',
     catSlug: searchParams.category,
   };
-  if (session) {
+  if (session?.user.role === 'NEXTADMIN') {
     where = { status: undefined, catSlug: searchParams.category };
   }
 

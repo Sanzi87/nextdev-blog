@@ -59,6 +59,8 @@ const NavBar = () => {
   );
 };
 
+export default NavBar;
+
 const DesktopMenu = () => {
   const { status } = useSession();
   const currentPath = usePathname();
@@ -96,11 +98,6 @@ const DesktopMenu = () => {
     </div>
   );
 };
-
-interface MenuProps {
-  menuOpen: boolean;
-  closeMenu: () => void;
-}
 
 const MobileMenu = ({ menuOpen, closeMenu }: MenuProps) => {
   const { status } = useSession();
@@ -254,5 +251,3 @@ const SocMedia = () => {
     </div>
   );
 };
-
-export default NavBar;

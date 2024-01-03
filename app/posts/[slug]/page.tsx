@@ -26,7 +26,7 @@ const PostDetailPage = async ({ params }: Props) => {
       </article>
 
       <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
-        {session && (
+        {session?.user.role === 'NEXTADMIN' && (
           <>
             <EditPostButton postSlug={post.slug} />
             <DeletePostButton postSlug={post.slug} />

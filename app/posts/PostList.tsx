@@ -52,7 +52,7 @@ const PostList = async ({ searchParams, posts }: Props) => {
             </p>
             <p className=''>{post.short}</p>
             <div className='justify-center my-3'>
-              {session && (
+              {session?.user.role === 'NEXTADMIN' && (
                 <>
                   <EditPostButton postSlug={post.slug} />
                 </>
