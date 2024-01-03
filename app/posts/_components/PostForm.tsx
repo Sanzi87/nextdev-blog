@@ -9,12 +9,17 @@ import 'easymde/dist/easymde.min.css';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import SimpleMDE from 'react-simplemde-editor';
+// import SimpleMDE from 'react-simplemde-editor';
 import { z } from 'zod';
 import SelectCategory from './SelectCategory';
 import SelectUser from './SelectUser';
 import SelectStatus from './SelectStatus';
 import SelectFeatured from './SelectFeatured';
+import dynamic from 'next/dynamic';
+
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false,
+});
 
 type PostFormData = z.infer<typeof postSchema>;
 
@@ -177,16 +182,18 @@ const PostForm = ({ post }: { post?: Post }) => {
           name='desc'
           control={control}
           defaultValue={post?.desc}
-          render={({ field }) => (
-            <SimpleMDE
-              {...field}
-              placeholder='Post'
-              // options={{
-              //   showIcons: ['strikethrough', 'table', 'code'],
-              //   hideIcons: [],
-              // }}
-            ></SimpleMDE>
-          )}
+          render={({ field }) =>
+            (typeof window !== 'undefined' ? (
+              <SimpleMDE
+                {...field}
+                placeholder='Post'
+                // options={{
+                //   showIcons: ['strikethrough', 'table', 'code'],
+                //   hideIcons: [],
+                // }}
+              />
+            ) : null) as React.ReactElement
+          }
         />
 
         <button disabled={isSubmitting} className='btn btn-primary'>
