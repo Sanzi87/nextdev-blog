@@ -6,6 +6,7 @@ import { FaTimes, FaBars } from 'react-icons/fa';
 import { AiFillYoutube, AiFillInstagram } from 'react-icons/ai';
 import classnames from 'classnames';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 interface MenuProps {
   menuOpen: boolean;
@@ -33,7 +34,7 @@ const NavBar = () => {
         {/* Logo */}
         <div className='flex items-center gap-3'>
           <Link href='/'>
-            <img
+            <Image
               alt={'NextDev Solutions Logo'}
               width={100}
               height={100}
@@ -90,6 +91,7 @@ const DesktopMenu = () => {
           {status === 'unauthenticated' && (
             <Link href={'/api/auth/signin'}>Login</Link>
           )}
+          {status === 'loading' && <Link href={'/api/auth/signin'}>Login</Link>}
           {status === 'authenticated' && (
             <Link href={'/api/auth/signout'}>Log out</Link>
           )}
@@ -180,10 +182,17 @@ const SocMedia = () => {
 
   if (status === 'loading')
     return (
-      <div className='hidden md:flex space-x-4 items-center py-3 w-10'>
-        <Link target='_blank' href='https://youtube.com/@NextDevSolutions'>
-          <AiFillYoutube className='text-lg' />
-        </Link>
+      <div className='hidden md:flex space-x-4 items-center py-3'>
+        {status === 'loading' && (
+          <>
+            <Link target='_blank' href='https://youtube.com/@NextDevSolutions'>
+              <AiFillYoutube className='text-3xl text-white hover:text-red-500' />
+            </Link>
+            <Link target='_blank' href='https://instagram.com/nextdevsolutions'>
+              <AiFillInstagram className='text-3xl text-white hover:text-fuchsia-800' />
+            </Link>
+          </>
+        )}
       </div>
     );
 
@@ -209,7 +218,7 @@ const SocMedia = () => {
         <div tabIndex={0} role='button' className='mt-1'>
           <div className='avatar'>
             <div className='w-10 rounded-full ring ring-offset-base-100 ring-offset-2'>
-              <img src={session!.user!.image!} />
+              <Image alt='User Avatar' src={session!.user!.image!} />
             </div>
           </div>
         </div>
