@@ -1,24 +1,21 @@
 
+import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { GoogleProfile } from 'next-auth/providers/google'
-import GitHubProvider  from "next-auth/providers/github";
-import { GithubProfile } from 'next-auth/providers/github'
 // import CredentialsProvider  from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
+import prisma from "@/lib/prisma";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
-
-const prisma = new PrismaClient;
 
 const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
         GoogleProvider({
-            profile(profile: GoogleProfile){
+            profile(profile){
                 return {
-                    ...profile,
-                    role: profile.role ?? "REGISTERED",
                     id: profile.sub,
+                    name: `${profile.given_name} ${profile.family_name}`,
+                    email: profile.email,
+                    role: profile.role? profile.role: "REGISTERED",
                     image: profile.picture,
                 }
             },
@@ -27,16 +24,17 @@ const authOptions: NextAuthOptions = {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!
         }),
         GitHubProvider({
-            profile(profile: GithubProfile){
+            profile(profile){
                 return {
-                    ...profile,
-                    role: profile.role ?? "REGISTERED",
                     id: profile.id.toString(),
+                    name: profile.name,
+                    email: profile.email,
+                    role: profile.role ?? "REGISTERED",
                     image: profile.avatar_url,
                 }
             },
-        clientId: process.env.GITHUB_ID!,
-        clientSecret: process.env.GITHUB_SECRET!
+        clientId: process.env.GITHUB_ID as string,
+        clientSecret: process.env.GITHUB_SECRET as string,
         }),
         // CredentialsProvider({
         //     name: "Credentials",
@@ -64,14 +62,13 @@ const authOptions: NextAuthOptions = {
         // })
     ],
     callbacks: {
-        jwt({ token, user }) {
-          if(user) token.role = user.role
-          return token
+        async jwt({ token, user }) {
+          return {...token, ...user};
         },
-        session({ session, token }) {
-          session.user.role = token.role
-          return session
-        }
+        async session({ session, token }) {
+            session.user.role = token.role;
+            return session
+        },
       },
     session: {
         strategy: 'jwt'
@@ -98,56 +95,6 @@ export default authOptions;
 //         clientSecret: process.env.GOOGLE_CLIENT_SECRET!
 //         })
 //     ],
-//     session: {
-//         strategy: 'jwt'
-//     },
-// };
-
-// export default authOptions;
-
-//first try:
-
-// import GoogleProvider from "next-auth/providers/google";
-// import { PrismaAdapter } from "@next-auth/prisma-adapter"
-// import { PrismaClient } from "@prisma/client"
-// import { NextAuthOptions } from "next-auth";
-// import { DefaultUser } from 'next-auth';
-// declare module 'next-auth' {
-//     interface Session {
-//         user?: DefaultUser & { role: string };
-//     }
-//     interface User extends DefaultUser {
-//         role: string;
-//     }
-// }
-
-// const prisma = new PrismaClient;
-
-// const authOptions: NextAuthOptions = {
-//     adapter: PrismaAdapter(prisma),
-//     providers: [
-//         GoogleProvider({
-//         clientId: process.env.GOOGLE_CLIENT_ID!,
-//         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-//         async profile(profile){
-//             return{
-//                 id: profile.id,
-//                 name: profile.name,
-//                 email: profile.email,
-//                 image: profile.image,
-//                 role: profile.role ?? 'user'
-//             }
-//         }
-//         })
-//     ],
-//     callbacks: {
-//         session({ session, user }) {
-//             if (session?.user) {
-//           session.user.role = user.role
-//         }
-//           return session
-//         }
-//       },
 //     session: {
 //         strategy: 'jwt'
 //     },
