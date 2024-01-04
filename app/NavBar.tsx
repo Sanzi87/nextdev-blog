@@ -218,7 +218,7 @@ const SocMedia = () => {
         <div tabIndex={0} role='button' className='mt-1'>
           <div className='avatar'>
             <div className='w-10 rounded-full ring ring-offset-base-100 ring-offset-2'>
-              <Image alt='User Avatar' src={session!.user!.image!} />
+              <img alt='User Avatar' src={session!.user!.image!} />
             </div>
           </div>
         </div>

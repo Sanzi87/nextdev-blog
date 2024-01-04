@@ -40,7 +40,7 @@ const CategoriesPage = async () => {
             <figure>
               <Link href={`/posts?category=${category.slug}`}>
                 <Image
-                  className='rounded-[16px]'
+                  className='rounded-t-[16px]'
                   alt={category.slug}
                   width={384}
                   height={192}
