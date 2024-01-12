@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className='flex flex-col lg:flex-row'>
       <div className='md:basis-3/4 lg:basis-4/5 p-5'>
-        <h1>NextDev Solution Blog</h1>
+        <h1>NextDev Solutions Blog</h1>
         <h2>Featured posts</h2>
         <LatestPosts featured={'1'} />
         <h2>Recent posts</h2>
