@@ -9,10 +9,11 @@ import authOptions from '@/app/auth/authOptions';
 import CategoriesModule from '@/app/components/CategoriesModule';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-const PostDetailPage = async ({ params }: Props) => {
+const PostDetailPage = async (props: Props) => {
+  const params = await props.params;
   const session = await getServerSession(authOptions);
   const post = await prisma.post.findUnique({
     where: { slug: params.slug },
@@ -37,7 +38,8 @@ const PostDetailPage = async ({ params }: Props) => {
     </div>
   );
 };
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata(props: Props) {
+  const params = await props.params;
   const post = await prisma.post.findUnique({ where: { slug: params.slug } });
 
   return {

@@ -5,10 +5,11 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-const EditCategoryPage = async ({ params }: Props) => {
+const EditCategoryPage = async (props: Props) => {
+  const params = await props.params;
   const category = await prisma.category.findUnique({
     where: { slug: params.slug },
   });

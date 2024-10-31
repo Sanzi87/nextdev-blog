@@ -8,10 +8,11 @@ import authOptions from '@/app/auth/authOptions';
 import { Metadata } from 'next';
 
 interface Props {
-  searchParams: PostQuery;
+  searchParams: Promise<PostQuery>;
 }
 
-const PostsPage = async ({ searchParams }: Props) => {
+const PostsPage = async (props: Props) => {
+  const searchParams = await props.searchParams;
   const page = parseInt(searchParams.page) || 1;
   const pageSize = 10;
   const session = await getServerSession(authOptions);
