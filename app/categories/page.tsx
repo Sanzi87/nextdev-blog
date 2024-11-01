@@ -2,34 +2,43 @@ import React from 'react';
 import prisma from '@/prisma/client';
 import Link from 'next/link';
 import EditCategoryButton from './[slug]/EditCategoryButton';
-import authOptions from '../auth/authOptions';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import { Metadata } from 'next';
+import authOptions from '../auth/authOptions';
 
 interface Category {
-  id: string;
-  name: string;
-  email: string;
+  id: number;
+  title: string;
+  slug: string;
+  desc: string;
+  img: string;
 }
 
 const CategoriesPage = async () => {
   const session = await getServerSession(authOptions);
-  const categories = await prisma.category.findMany({
-    orderBy: {
-      title: 'asc',
-    },
-  });
+  const isAdmin = session?.user.role === 'NEXTADMIN';
+
+  const categories = (
+    await prisma.category.findMany({
+      orderBy: {
+        title: 'asc',
+      },
+    })
+  ).map((category) => ({
+    ...category,
+    id: category.id.toString(),
+  }));
 
   return (
     <div className=''>
-      {session?.user.role === 'NEXTADMIN' && (
+      {isAdmin && (
         <div className='mb-5 flex justify-center p-5 m-10'>
-          <button className='rounded-md btn btn-primary p-0 '>
-            <Link className='w-full p-4' href='/categories/new'>
+          <Link href='/categories/new'>
+            <button className='rounded-md btn btn-primary p-4'>
               New Category
-            </Link>
-          </button>
+            </button>
+          </Link>
         </div>
       )}
 
@@ -41,7 +50,7 @@ const CategoriesPage = async () => {
               <Link href={`/posts?category=${category.slug}`}>
                 <Image
                   className='rounded-t-[16px]'
-                  alt={category.slug}
+                  alt={category.title}
                   width={384}
                   height={192}
                   style={{ maxWidth: '100%', height: 'auto' }}
@@ -56,13 +65,11 @@ const CategoriesPage = async () => {
                 </Link>
               </h2>
               <p className='text-center'>{category.desc}</p>
-              <div className='card-actions justify-center'>
-                {session?.user.role === 'NEXTADMIN' && (
-                  <>
-                    <EditCategoryButton categorySlug={category.slug} />
-                  </>
-                )}
-              </div>
+              {isAdmin && (
+                <div className='card-actions justify-center'>
+                  <EditCategoryButton categorySlug={category.slug} />
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -70,8 +77,6 @@ const CategoriesPage = async () => {
     </div>
   );
 };
-
-export const dynamic = 'force-dynamic';
 
 export default CategoriesPage;
 

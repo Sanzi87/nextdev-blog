@@ -3,11 +3,12 @@ import React from 'react';
 
 const EditCategoryButton = ({ categorySlug }: { categorySlug: string }) => {
   return (
-    <button className='btn btn-primary p-0'>
-      <Link className='w-full p-4' href={`/categories/${categorySlug}/edit`}>
-        Edit
-      </Link>
-    </button>
+    <Link
+      href={`/categories/${categorySlug}/edit`}
+      className='btn btn-primary w-full p-4 text-center'
+    >
+      Edit
+    </Link>
   );
 };
 
