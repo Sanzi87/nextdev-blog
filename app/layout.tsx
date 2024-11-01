@@ -1,13 +1,13 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Lato } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import NavBar from './NavBar';
 import AuthProvider from './auth/Provider';
 import QueryClientProvider from './QueryClientProvider';
 import Footer from './components/Footer';
 import GoogleAnalytics from './components/GoogleAnalytics';
 
-const lato = Lato({ weight: '400', subsets: ['latin'] });
+const poppins = Poppins({ weight: '400', subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'NextDev Solutions',
@@ -36,7 +36,7 @@ export default function RootLayout({
           sizes='<generated>'
         />
       </head>
-      <body className={lato.className}>
+      <body className={poppins.className}>
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         ) : null}

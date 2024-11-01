@@ -35,15 +35,17 @@ h1 {
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  
 }
-h2, h3 {
+h2,
+h3 {
   font-weight: bold;
   margin-bottom: 0.4rem;
   margin-top: 2rem;
 }
 
-article-page > h1, h2, h3 {
+article-page > h1,
+h2,
+h3 {
   font-weight: bold;
   margin-bottom: 0.6rem;
   margin-top: 1.8rem;
@@ -54,11 +56,11 @@ h2 {
 }
 
 h3 {
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
 }
 
 p {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .nextpost img {
@@ -66,13 +68,12 @@ p {
 }
 
 .CodeMirror {
-  background: #10172A !important;
-  color: #C9C8CA !important;
+  background: #10172a !important;
+  color: #c9c8ca !important;
   font-size: 1.125rem !important;
-  
 }
-.editor-toolbar{
-  background: #10172A !important;
+.editor-toolbar {
+  background: #10172a !important;
 }
 .active-link {
   color: white;
@@ -81,22 +82,21 @@ p {
 
 /*Card styles*/
 
-
 .card-glass {
-    
-    background-image: linear-gradient(
-        135deg,
-        rgb(255 255 255 / var(--glass-opacity, 30%)) 0%,
-        rgb(0 0 0 / 0%) 100%
-      ),
-      linear-gradient(
-        var(--glass-reflex-degree, 100deg),
-        rgb(255 255 255 / var(--glass-reflex-opacity, 10%)) 25%,
-        rgb(0 0 0 / 0%) 25%
-      );
-    box-shadow: 0 0 0 1px rgb(255 255 255 / var(--glass-border-opacity, 10%)) inset,
-      0 0 0 2px rgb(0 0 0 / 5%);
-    text-shadow: 0 1px rgb(0 0 0 / var(--glass-text-shadow-opacity, 5%));
+  background-image: linear-gradient(
+      135deg,
+      rgb(255 255 255 / var(--glass-opacity, 30%)) 0%,
+      rgb(0 0 0 / 0%) 100%
+    ),
+    linear-gradient(
+      var(--glass-reflex-degree, 100deg),
+      rgb(255 255 255 / var(--glass-reflex-opacity, 10%)) 25%,
+      rgb(0 0 0 / 0%) 25%
+    );
+  box-shadow: 0 0 0 1px rgb(255 255 255 / var(--glass-border-opacity, 10%))
+      inset,
+    0 0 0 2px rgb(0 0 0 / 5%);
+  text-shadow: 0 1px rgb(0 0 0 / var(--glass-text-shadow-opacity, 5%));
 }
 
 @media (max-width: 768px) {

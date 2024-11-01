@@ -15,13 +15,13 @@ const SinglePost = ({ post }: { post: Post }) => {
         alt={post.title}
         width={1920}
         height={1080}
-        style={{ maxWidth: '100%', height: 'auto' }}
+        className='w-full h-auto mb-12'
         src={`/nextdev-images/${post.img}`}
       />
       <h1>{post.title}</h1>
-      <p>
+      <time className='text-sm text-gray-500'>
         <FormattedDate ufdate={post.createdAt} />
-      </p>
+      </time>
       <div className='nextpost'>
         <MarkdownBlock>{post.desc}</MarkdownBlock>
       </div>

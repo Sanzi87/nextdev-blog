@@ -1,19 +1,19 @@
 import React from 'react';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { lucario } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import CopyButton from './CopyButton';
 
 function generateCodeBlock(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
 ) {
   const match = /language-(\w+)/.exec(props.className || '');
-
-  return match ? (
+  const language = match ? match[1] : 'text';
+  return (
     <div className='relative'>
       <SyntaxHighlighter
-        style={dracula}
-        language={match[1]}
+        style={lucario}
+        language={language}
         showLineNumbers
         customStyle={{
           maxWidth: 'calc(100vw - 50px)',
@@ -25,8 +25,6 @@ function generateCodeBlock(
       </SyntaxHighlighter>
       <CopyButton code={String(props.children).replace(/\n$/, '')} />
     </div>
-  ) : (
-    <code className={props.className}>{props.children}</code>
   );
 }
 
