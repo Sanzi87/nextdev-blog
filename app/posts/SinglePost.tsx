@@ -5,10 +5,14 @@ import FormattedDate from '../components/FormatedDate';
 import MarkdownBlock from './_components/MarkdownBlock';
 
 const SinglePost = ({ post }: { post: Post }) => {
+  if (!post) {
+    return <p>Post not found.</p>;
+  }
+
   return (
     <>
       <Image
-        alt={post.slug}
+        alt={post.title}
         width={1920}
         height={1080}
         style={{ maxWidth: '100%', height: 'auto' }}

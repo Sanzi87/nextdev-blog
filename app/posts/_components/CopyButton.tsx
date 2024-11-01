@@ -21,7 +21,12 @@ const CopyButton: React.FC<CopyButtonProps> = ({ code }) => {
 
   return (
     <CopyToClipboard text={code} onCopy={handleCopy}>
-      <button className='absolute top-2 right-2 bg-gray-800 p-2 rounded-full opacity-70 hover:opacity-100 focus:outline-none'>
+      <button
+        className={`absolute top-2 right-2 p-2 rounded-full opacity-70 focus:outline-none ${
+          isCopied ? 'bg-green-600' : 'bg-gray-800 hover:opacity-100'
+        }`}
+        aria-label='Copy code to clipboard'
+      >
         {isCopied ? <span>Copied!</span> : <AiFillCopy />}
       </button>
     </CopyToClipboard>

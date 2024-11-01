@@ -2,7 +2,7 @@ import React from 'react';
 import Markdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import CopyButton from './CopyButton'; // Adjust the path based on your project structure
+import CopyButton from './CopyButton';
 
 function generateCodeBlock(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
@@ -36,11 +36,14 @@ function noPreWrap(
     HTMLPreElement
   >
 ) {
-  // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{props.children}</>;
 }
 
 export default function MarkdownBlock({ children }: { children: string }) {
+  if (!children) {
+    return <p>No content provided.</p>;
+  }
+
   return (
     <div className='container'>
       <Markdown

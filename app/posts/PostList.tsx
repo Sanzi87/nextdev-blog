@@ -1,8 +1,6 @@
 import { Post } from '@prisma/client';
-import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import Link from 'next/link';
-import authOptions from '../auth/authOptions';
 import FormattedDate from '../components/FormatedDate';
 import EditPostButton from './[slug]/EditPostButton';
 import { Session } from 'next-auth';

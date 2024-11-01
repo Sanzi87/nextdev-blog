@@ -15,9 +15,18 @@ interface Props {
 const PostDetailPage = async (props: Props) => {
   const params = await props.params;
   const session = await getServerSession(authOptions);
-  const post = await prisma.post.findUnique({
-    where: { slug: params.slug },
-  });
+  const isAdmin = session?.user.role === 'NEXTADMIN';
+
+  let post;
+  try {
+    post = await prisma.post.findUnique({
+      where: { slug: params.slug },
+    });
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    notFound();
+  }
+
   if (!post) notFound();
 
   return (
@@ -27,7 +36,7 @@ const PostDetailPage = async (props: Props) => {
       </article>
 
       <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
-        {session?.user.role === 'NEXTADMIN' && (
+        {isAdmin && (
           <>
             <EditPostButton postSlug={post.slug} />
             <DeletePostButton postSlug={post.slug} />

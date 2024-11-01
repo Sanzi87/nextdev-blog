@@ -92,7 +92,11 @@ const PostForm = ({ post }: { post?: Post }) => {
       router.refresh();
     } catch (error) {
       setSubmitting(false);
-      setError('An unexpected error occurred.');
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : 'An unexpected error occurred.';
+      setError(errorMessage);
     }
   });
 
