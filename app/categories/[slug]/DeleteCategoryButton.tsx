@@ -1,6 +1,6 @@
 'use client';
 import Spinner from '@/app/components/Spinner';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -12,20 +12,30 @@ declare global {
 
 const DeleteCategoryButton = ({ categorySlug }: { categorySlug: string }) => {
   const router = useRouter();
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isDeleting, setDeleting] = useState(false);
 
   const deleteCategory = async () => {
     try {
       setDeleting(true);
+      setError(null);
       await axios.delete('/api/categories/' + categorySlug);
       router.push('/categories');
       router.refresh();
-    } catch (error) {
+    } catch (err) {
       setDeleting(false);
-      setError(true);
+      if (err instanceof AxiosError) {
+        setError(
+          err.response?.data?.message || 'This category could not be deleted.'
+        );
+      } else {
+        setError(
+          'This category could not be deleted due to an unexpected error.'
+        );
+      }
     }
   };
+
   return (
     <>
       <button
@@ -59,7 +69,7 @@ const DeleteCategoryButton = ({ categorySlug }: { categorySlug: string }) => {
       <dialog
         id='delete_error'
         className={`modal modal-bottom sm:modal-middle ${
-          error && 'modal-open'
+          error ? 'modal-open' : ''
         }`}
       >
         <div className='modal-box'>
@@ -69,7 +79,7 @@ const DeleteCategoryButton = ({ categorySlug }: { categorySlug: string }) => {
             <form method='dialog'>
               <button
                 className='btn btn-outline'
-                onClick={() => setError(false)}
+                onClick={() => setError(null)}
               >
                 Ok
               </button>

@@ -10,6 +10,8 @@ import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 import { Category } from '@prisma/client';
 import DeleteCategoryButton from '../[slug]/DeleteCategoryButton';
+import { AxiosError } from 'axios';
+import Link from 'next/link';
 
 type CategoryFormData = z.infer<typeof categorySchema>;
 
@@ -22,33 +24,53 @@ const CategoryForm = ({ category }: { category?: Category }) => {
     formState: { errors },
   } = useForm<CategoryFormData>({
     resolver: zodResolver(categorySchema),
+    defaultValues: category
+      ? {
+          title: category.title,
+          slug: category.slug,
+          img: category.img,
+          desc: category.desc || '',
+        }
+      : undefined,
   });
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const title = event.target.value;
-    const slug = generateSlug(title);
-    setValue('slug', slug);
-  };
-
-  const generateSlug = (title: string) => {
-    return title
+  const generateSlug = (title: string) =>
+    title
       .toLowerCase()
       .replace(/\s+/g, '-')
       .replace(/[^a-z0-9-]/g, '');
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const title = event.target.value;
+    if (!category) {
+      const slug = generateSlug(title);
+      setValue('slug', slug);
+    }
   };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
-      if (category) await axios.patch('/api/categories/' + category.slug, data);
-      else await axios.post('/api/categories', data);
+      setError('');
+
+      if (category) {
+        await axios.patch(`/api/categories/${category.slug}`, data);
+      } else {
+        await axios.post('/api/categories', data);
+      }
+
       router.push('/categories');
       router.refresh();
-    } catch (error) {
+    } catch (err) {
       setSubmitting(false);
-      setError('An unexpected error occurred.');
+
+      if (err instanceof AxiosError && err.response) {
+        setError(err.response.data.message || 'An unexpected error occurred.');
+      } else {
+        setError('An unexpected error occurred.');
+      }
     }
   });
 
@@ -86,7 +108,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           placeholder='Title'
           {...register('title')}
           onChange={handleTitleChange}
-          className='input input-bordered w-full input-lg form-control'
+          className='input input-bordered w-full input-lg'
         />
         <ErrorMessage>{errors.slug?.message}</ErrorMessage>
         <input
@@ -94,7 +116,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           defaultValue={category?.slug}
           placeholder='Slug'
           {...register('slug')}
-          className='input input-bordered w-full input-lg form-control'
+          className='input input-bordered w-full input-lg'
         />
 
         <ErrorMessage>{errors.img?.message}</ErrorMessage>
@@ -103,7 +125,7 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           defaultValue={category?.img}
           placeholder='Image'
           {...register('img')}
-          className='input input-bordered input-lg w-full form-control'
+          className='input input-bordered input-lg w-full'
         />
 
         <ErrorMessage>{errors.desc?.message}</ErrorMessage>
@@ -112,17 +134,22 @@ const CategoryForm = ({ category }: { category?: Category }) => {
           defaultValue={category?.desc || ''}
           placeholder='Description'
           {...register('desc')}
-          className='input input-bordered input-lg w-full form-control'
+          className='input input-bordered input-lg w-full'
         />
-        <button disabled={isSubmitting} className='btn btn-primary'>
-          {category ? 'Update' : 'Create'} Category{' '}
-          {isSubmitting && <Spinner />}
-        </button>
-        <button className='btn btn-outline p-0 mx-3'>
-          <a className='w-full p-4' href='/categories'>
+
+        <div className='flex gap-4'>
+          <button
+            type='submit'
+            disabled={isSubmitting}
+            className='btn btn-primary'
+          >
+            {category ? 'Update' : 'Create'} Category{' '}
+            {isSubmitting && <Spinner />}
+          </button>
+          <Link href='/categories' className='btn btn-outline p-4'>
             Cancel
-          </a>
-        </button>
+          </Link>
+        </div>
       </form>
     </div>
   );
