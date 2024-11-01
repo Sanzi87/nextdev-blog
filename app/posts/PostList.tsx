@@ -5,6 +5,7 @@ import Link from 'next/link';
 import authOptions from '../auth/authOptions';
 import FormattedDate from '../components/FormatedDate';
 import EditPostButton from './[slug]/EditPostButton';
+import { Session } from 'next-auth';
 
 export interface PostQuery {
   category: string;
@@ -14,10 +15,11 @@ export interface PostQuery {
 interface Props {
   searchParams: PostQuery;
   posts: Post[];
+  session: Session | null;
 }
 
-const PostList = async ({ searchParams, posts }: Props) => {
-  const session = await getServerSession(authOptions);
+const PostList = ({ searchParams, posts, session }: Props) => {
+  const isAdmin = session?.user.role === 'NEXTADMIN';
 
   return (
     <>
@@ -30,7 +32,7 @@ const PostList = async ({ searchParams, posts }: Props) => {
             <Link href={`/posts/${post.slug}`}>
               <Image
                 className='object-cover h-full w-full'
-                alt={post.slug}
+                alt={post.title}
                 width={1920}
                 height={1080}
                 src={`/nextdev-images/${post.img}`}
@@ -41,23 +43,21 @@ const PostList = async ({ searchParams, posts }: Props) => {
             <h2 className=''>
               <Link href={`/posts/${post.slug}`}>{post.title}</Link>
             </h2>
-            <p className=' p-1'>
+            <p className='p-1 flex flex-wrap items-center'>
               <FormattedDate ufdate={post.createdAt} />
               <span className='bg-base-100 uppercase font-bold p-1 ml-3'>
                 {post.catSlug}
               </span>
               {post.status === '0' && (
-                <span className='bg-red-900 uppercase'>Unpublished</span>
+                <span className='bg-red-900 uppercase ml-3'>Unpublished</span>
               )}
             </p>
-            <p className=''>{post.short}</p>
-            <div className='justify-center my-3'>
-              {session?.user.role === 'NEXTADMIN' && (
-                <>
-                  <EditPostButton postSlug={post.slug} />
-                </>
-              )}
-            </div>
+            <p>{post.short}</p>
+            {isAdmin && (
+              <div className='justify-center my-3'>
+                <EditPostButton postSlug={post.slug} />
+              </div>
+            )}
           </div>
         </div>
       ))}

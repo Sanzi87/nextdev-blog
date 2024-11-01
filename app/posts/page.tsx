@@ -1,64 +1,64 @@
-import prisma from '@/prisma/client';
+import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/authOptions';
 import CategoriesModule from '../components/CategoriesModule';
 import CreatePostModule from '../components/CreatePostModule';
 import Pagination from '../components/Pagination';
 import PostList, { PostQuery } from './PostList';
-import { getServerSession } from 'next-auth';
-import authOptions from '@/app/auth/authOptions';
-import { Metadata } from 'next';
+import { usePosts, PostStatus } from '@/app/hooks/usePosts';
 
 interface Props {
   searchParams: Promise<PostQuery>;
 }
 
 const PostsPage = async (props: Props) => {
-  const searchParams = await props.searchParams;
-  const page = parseInt(searchParams.page) || 1;
-  const pageSize = 10;
-  const session = await getServerSession(authOptions);
+  try {
+    const searchParams = await props.searchParams;
+    const page = parseInt(searchParams.page) || 1;
+    const pageSize = 5;
+    const session = await getServerSession(authOptions);
+    const userRole = session?.user.role;
 
-  let where: { status: string | undefined; catSlug: string } = {
-    status: '1',
-    catSlug: searchParams.category,
-  };
-  if (session?.user.role === 'NEXTADMIN') {
-    where = { status: undefined, catSlug: searchParams.category };
+    const { posts, postCount } = await usePosts(
+      page,
+      pageSize,
+      searchParams.category,
+      userRole
+    );
+
+    return (
+      <div className='flex flex-col lg:flex-row'>
+        <div className='md:basis-3/4 lg:basis-4/5 p-3'>
+          <h1>
+            Blog posts{' '}
+            {searchParams.category && <span> - {searchParams.category}</span>}
+          </h1>
+          <PostList
+            searchParams={searchParams}
+            posts={posts}
+            session={session}
+          />
+          <Pagination
+            itemCount={postCount}
+            pageSize={pageSize}
+            currentPage={page}
+          />
+        </div>
+        <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
+          <CreatePostModule />
+          <CategoriesModule />
+        </div>
+      </div>
+    );
+  } catch (error) {
+    return (
+      <div className='p-5'>
+        <h2>Error loading posts</h2>
+        <p>There was an issue loading the posts. Please try again later.</p>
+      </div>
+    );
   }
-
-  const posts = await prisma.post.findMany({
-    where,
-    orderBy: {
-      createdAt: 'desc',
-    },
-    skip: (page - 1) * pageSize,
-    take: pageSize,
-  });
-
-  const postCount = await prisma.post.count({ where });
-
-  return (
-    <div className='flex flex-col lg:flex-row'>
-      <div className='md:basis-3/4 lg:basis-4/5 p-3'>
-        <h1>
-          Blog posts{' '}
-          {searchParams.category && <span> - {searchParams.category}</span>}
-        </h1>
-        <PostList searchParams={searchParams} posts={posts} />
-        <Pagination
-          itemCount={postCount}
-          pageSize={pageSize}
-          currentPage={page}
-        />
-      </div>
-      <div className='md:basis-1/4 lg:basis-1/5 flex flex-col gap-4 p-5'>
-        <CreatePostModule />
-        <CategoriesModule />
-      </div>
-    </div>
-  );
 };
-
-export const dynamic = 'force-dynamic';
 
 export default PostsPage;
 
