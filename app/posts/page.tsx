@@ -1,3 +1,4 @@
+import prisma from '@/prisma/client';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/authOptions';
@@ -5,7 +6,6 @@ import CategoriesModule from '../components/CategoriesModule';
 import CreatePostModule from '../components/CreatePostModule';
 import Pagination from '../components/Pagination';
 import PostList, { PostQuery } from './PostList';
-import { usePosts, PostStatus } from '@/app/hooks/usePosts';
 
 interface Props {
   searchParams: Promise<PostQuery>;
@@ -15,16 +15,28 @@ const PostsPage = async (props: Props) => {
   try {
     const searchParams = await props.searchParams;
     const page = parseInt(searchParams.page) || 1;
-    const pageSize = 5;
+    const pageSize = 10;
     const session = await getServerSession(authOptions);
     const userRole = session?.user.role;
 
-    const { posts, postCount } = await usePosts(
-      page,
-      pageSize,
-      searchParams.category,
-      userRole
-    );
+    let where: { status: string | undefined; catSlug: string } = {
+      status: '1',
+      catSlug: searchParams.category,
+    };
+    if (userRole === 'NEXTADMIN') {
+      where = { status: undefined, catSlug: searchParams.category };
+    }
+
+    const posts = await prisma.post.findMany({
+      where,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    const postCount = await prisma.post.count({ where });
 
     return (
       <div className='flex flex-col lg:flex-row'>

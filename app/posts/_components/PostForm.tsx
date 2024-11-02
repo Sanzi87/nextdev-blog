@@ -16,6 +16,7 @@ import SelectUser from './SelectUser';
 import SelectStatus from './SelectStatus';
 import SelectFeatured from './SelectFeatured';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false,
@@ -199,15 +200,14 @@ const PostForm = ({ post }: { post?: Post }) => {
             ) : null) as React.ReactElement
           }
         />
-
-        <button disabled={isSubmitting} className='btn btn-primary'>
-          {post ? 'Update' : 'Create'} Post {isSubmitting && <Spinner />}
-        </button>
-        <button className='btn btn-outline p-0 ml-3'>
-          <a className='w-full p-4' href='/posts'>
+        <div className='flex gap-4'>
+          <button disabled={isSubmitting} className='btn btn-primary'>
+            {post ? 'Update' : 'Create'} Post {isSubmitting && <Spinner />}
+          </button>
+          <Link href='/posts' className='btn btn-outline p-4'>
             Cancel
-          </a>
-        </button>
+          </Link>
+        </div>
       </form>
     </div>
   );
