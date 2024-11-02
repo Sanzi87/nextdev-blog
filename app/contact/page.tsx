@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactForm from './_components/ContactForm';
 import { Metadata } from 'next';
+
 const ContactPage = () => {
   return (
     <div className='px-6'>

@@ -26,45 +26,41 @@ const ContactForm = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      setSubmitting(true);
-
-      // Use grecaptcha to generate a token
-      const token: string = await new Promise((resolve) => {
-        grecaptcha.ready(() => {
-          grecaptcha.execute(SITE_KEY!, { action: 'submit' }).then(
-            (response: string) => resolve(response),
-            (error: unknown) => {
-              console.error('reCAPTCHA error:', error);
-              resolve('');
-            }
-          );
-        });
+  const getReCaptchaToken = async () => {
+    return new Promise<string>((resolve) => {
+      grecaptcha.ready(() => {
+        grecaptcha
+          .execute(SITE_KEY!, { action: 'submit' })
+          .then(resolve, () => {
+            console.error('reCAPTCHA error');
+            resolve('');
+          });
       });
+    });
+  };
 
+  const onSubmit = handleSubmit(async (data) => {
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const token = await getReCaptchaToken();
       const res = await axios.post('/api/contact', { ...data, token });
+
       if (res.data.status === 201) {
         reset();
-
         toast.success(res.data.message, {
           position: 'top-center',
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
           theme: 'light',
         });
       } else {
         toast.error(res.data.message);
       }
-
-      setSubmitting(false);
     } catch (error) {
-      setSubmitting(false);
       setError('An unexpected error occurred.');
+    } finally {
+      setSubmitting(false);
     }
   });
 
@@ -72,19 +68,6 @@ const ContactForm = () => {
     <div className='max-w-xl mx-auto my-10'>
       {error && (
         <div role='alert' className='alert alert-error mb-5'>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            className='stroke-current shrink-0 h-6 w-6'
-            fill='none'
-            viewBox='0 0 24 24'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth='2'
-              d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-            />
-          </svg>
           <span>{error}</span>
         </div>
       )}
@@ -93,54 +76,49 @@ const ContactForm = () => {
         src={`https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`}
       />
       <form className='space-y-4' onSubmit={onSubmit}>
-        <ErrorMessage>{errors.name?.message}</ErrorMessage>
+        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         <input
           type='text'
           placeholder='Name'
           {...register('name')}
-          className='input input-bordered input-lg w-full form-control'
+          className='input input-bordered input-lg w-full'
         />
-        <ErrorMessage>{errors.email?.message}</ErrorMessage>
+        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         <input
           type='text'
+          aria-label='Email address'
           placeholder='Email address'
           {...register('email')}
-          className='input input-bordered input-lg w-full form-control'
-        />
-        <ErrorMessage>{errors.subject?.message}</ErrorMessage>
-        <input
-          type='text'
-          placeholder='Subject...'
-          {...register('subject')}
-          className='input input-bordered input-lg w-full form-control'
+          className='input input-bordered input-lg w-full'
         />
 
-        <ErrorMessage>{errors.message?.message}</ErrorMessage>
+        {errors.subject && (
+          <ErrorMessage>{errors.subject.message}</ErrorMessage>
+        )}
+        <input
+          type='text'
+          aria-label='Subject'
+          placeholder='Subject...'
+          {...register('subject')}
+          className='input input-bordered input-lg w-full'
+        />
+
+        {errors.message && (
+          <ErrorMessage>{errors.message.message}</ErrorMessage>
+        )}
         <textarea
-          className='textarea textarea-bordered textarea-lg w-full form-control'
+          aria-label='Message'
           placeholder='Message...'
           rows={7}
           {...register('message')}
-        ></textarea>
+          className='textarea textarea-bordered textarea-lg w-full'
+        />
 
         <button disabled={isSubmitting} className='btn btn-primary'>
           Send {isSubmitting && <Spinner />}
         </button>
       </form>
-      <div>
-        <ToastContainer
-          position='top-center'
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='light'
-        />
-      </div>
+      <ToastContainer position='top-center' autoClose={5000} theme='light' />
     </div>
   );
 };
