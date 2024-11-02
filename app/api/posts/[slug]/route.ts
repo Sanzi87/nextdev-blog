@@ -1,15 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
-import {postSchema} from "../../../validationSchemas";
-import prisma from "@/prisma/client";
-import { getServerSession } from "next-auth";
-import authOptions from "@/app/auth/authOptions";
+import { NextRequest, NextResponse } from 'next/server';
+import { postSchema } from '../../../validationSchemas';
+import prisma from '@/prisma/client';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/authOptions';
 
-export async function PATCH(request: NextRequest, props: { params: Promise<{ slug: string }> }) {
+export async function PATCH(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> }
+) {
   const params = await props.params;
 
   const session = await getServerSession(authOptions);
-  if(session?.user.role !== 'NEXTADMIN')
-      return NextResponse.json({}, {status: 401});
+  if (session?.user.role !== 'NEXTADMIN')
+    return NextResponse.json({}, { status: 401 });
 
   const body = await request.json();
   const validation = postSchema.safeParse(body);
@@ -22,7 +25,7 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ slu
   });
 
   if (!post)
-    return NextResponse.json({ error: "Invalid post" }, { status: 404 });
+    return NextResponse.json({ error: 'Invalid post' }, { status: 404 });
 
   const updatedPost = await prisma.post.update({
     where: { slug: post.slug },
@@ -35,28 +38,31 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ slu
       status: body.status,
       featured: body.featured,
       userId: body.userId,
-      img: body.img
+      img: body.img,
     },
   });
 
   return NextResponse.json(updatedPost);
 }
-  
-export async function DELETE(request: NextRequest, props: {params: Promise<{slug: string}>}) {
+
+export async function DELETE(
+  request: NextRequest,
+  props: { params: Promise<{ slug: string }> }
+) {
   const params = await props.params;
 
   const session = await getServerSession(authOptions);
-  if(session?.user.role !== 'NEXTADMIN')
-      return NextResponse.json({}, {status: 401});
+  if (session?.user.role !== 'NEXTADMIN')
+    return NextResponse.json({}, { status: 401 });
 
   const post = await prisma.post.findUnique({
-    where: { slug: params.slug}
+    where: { slug: params.slug },
   });
   if (!post)
-    return NextResponse.json ({ error: "Invalid post" }, { status: 404 });
+    return NextResponse.json({ error: 'Invalid post' }, { status: 404 });
 
   await prisma.post.delete({
-    where: {slug: post.slug}
-  })
+    where: { slug: post.slug },
+  });
   return NextResponse.json({});
 }

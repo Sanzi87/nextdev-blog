@@ -15,10 +15,7 @@ const footerLinks = [
 ];
 const socialLinks = [
   { label: 'Youtube', href: 'https://youtube.com/@NextDevSolutions' },
-  { label: 'Facebook', href: 'https://facebook.com/' },
   { label: 'Instagram', href: 'https://instagram.com/nextdev-solutions' },
-  { label: 'Twitter', href: 'https://twitter.com' },
-  { label: 'TikTok', href: 'https://tiktok.com' },
 ];
 
 interface FooterNavProps {
@@ -71,10 +68,10 @@ const Footer = () => {
               />
             </div>
             <div className='flex items-center'>
-              <h2 className='my-0'>NextDev Solutions</h2>
+              <h3 className='my-0'>NextDev Solutions</h3>
             </div>
           </div>
-          <p className='text-justify'>
+          <p className='text-justify text-[16px]'>
             Discover the nuances of web development with NextDev Solutions, your
             hub for insights into HTML, CSS, JavaScript, TypeScript, PHP,
             Python, React, Next JS, and Django. Uncover the secrets of various

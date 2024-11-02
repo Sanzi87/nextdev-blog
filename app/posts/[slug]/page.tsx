@@ -21,6 +21,7 @@ const PostDetailPage = async (props: Props) => {
   try {
     post = await prisma.post.findUnique({
       where: { slug: params.slug },
+      include: { user: true },
     });
   } catch (error) {
     console.error('Error fetching post:', error);
@@ -47,6 +48,7 @@ const PostDetailPage = async (props: Props) => {
     </div>
   );
 };
+
 export async function generateMetadata(props: Props) {
   const params = await props.params;
   const post = await prisma.post.findUnique({ where: { slug: params.slug } });

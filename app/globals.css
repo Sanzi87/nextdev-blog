@@ -1,30 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
 body {
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
@@ -61,6 +37,7 @@ h3 {
 
 p {
   font-size: 1.3rem;
+  margin-bottom: 1.3rem;
 }
 
 .nextpost img {
@@ -120,7 +97,7 @@ p {
   }
 
   p {
-    font-size: 1rem; /* 16px */
-    margin-bottom: 1rem;
+    font-size: 1.2rem; /* 16px */
+    margin-bottom: 1.2rem;
   }
 }

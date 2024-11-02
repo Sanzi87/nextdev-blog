@@ -43,7 +43,7 @@ const PostList = ({ searchParams, posts, session }: Props) => {
             </h2>
             <p className='p-1 flex flex-wrap items-center'>
               <FormattedDate ufdate={post.createdAt} />
-              <span className='bg-base-100 uppercase font-bold p-1 ml-3'>
+              <span className='bg-base-100 uppercase font-bold p-1 ml-3 px-3'>
                 {post.catSlug}
               </span>
               {post.status === '0' && (

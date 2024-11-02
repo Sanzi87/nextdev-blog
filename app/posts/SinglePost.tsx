@@ -4,7 +4,11 @@ import React from 'react';
 import FormattedDate from '../components/FormatedDate';
 import MarkdownBlock from './_components/MarkdownBlock';
 
-const SinglePost = ({ post }: { post: Post }) => {
+interface PostWithUser extends Post {
+  user: { name: string | null };
+}
+
+const SinglePost = ({ post }: { post: PostWithUser }) => {
   if (!post) {
     return <p>Post not found.</p>;
   }
@@ -19,9 +23,14 @@ const SinglePost = ({ post }: { post: Post }) => {
         src={`/nextdev-images/${post.img}`}
       />
       <h1>{post.title}</h1>
-      <time className='text-sm text-gray-500'>
-        <FormattedDate ufdate={post.createdAt} />
-      </time>
+      <div className='flex justify-between'>
+        <time className='text-sm text-gray-500'>
+          Date: <FormattedDate ufdate={post.createdAt} />
+        </time>
+        <small className='text-sm text-gray-500'>
+          Author: {post.user.name}
+        </small>
+      </div>
       <div className='nextpost'>
         <MarkdownBlock>{post.desc}</MarkdownBlock>
       </div>

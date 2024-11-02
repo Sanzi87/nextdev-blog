@@ -87,15 +87,6 @@ const DesktopMenu = () => {
             </Link>
           </li>
         ))}
-        <li className='hover:text-white'>
-          {status === 'unauthenticated' && (
-            <Link href={'/api/auth/signin'}>Login</Link>
-          )}
-          {status === 'loading' && <Link href={'/api/auth/signin'}>Login</Link>}
-          {status === 'authenticated' && (
-            <Link href={'/api/auth/signout'}>Log out</Link>
-          )}
-        </li>
       </ul>
     </div>
   );
@@ -158,18 +149,13 @@ const MobileMenu = ({ menuOpen, closeMenu }: MenuProps) => {
                 <AiFillInstagram className='text-3xl text-white hover:text-fuchsia-800 duration-500' />
               </Link>
             </div>
-            <div className='flex hover:text-white'>
-              {status === 'unauthenticated' && (
-                <Link href={'/api/auth/signin'} onClick={closeMenu}>
-                  Login
-                </Link>
-              )}
-              {status === 'authenticated' && (
+            {status === 'authenticated' && (
+              <div className='flex hover:text-white'>
                 <Link href={'/api/auth/signout'} onClick={closeMenu}>
                   Log out
                 </Link>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       )}
