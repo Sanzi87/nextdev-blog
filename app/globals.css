@@ -1,65 +1,79 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Body styles */
 body {
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+  @apply font-sans text-base leading-relaxed;
 }
 
+/* Heading styles */
 h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  @apply text-4xl font-bold mb-4;
 }
-h2,
-h3 {
-  font-weight: bold;
-  margin-bottom: 0.4rem;
-  margin-top: 2rem;
-}
-
-article-page > h1,
-h2,
-h3 {
-  font-weight: bold;
-  margin-bottom: 0.6rem;
-  margin-top: 1.8rem;
-}
-
 h2 {
-  font-size: 2rem;
+  @apply text-3xl font-bold my-7;
 }
-
 h3 {
-  font-size: 1.5rem;
+  @apply text-2xl font-bold my-5;
 }
 
+/* Article headings */
+article-page > h1,
+article-page h2,
+article-page h3 {
+  @apply font-bold mb-2 mt-6;
+}
+
+/* Paragraph styling */
 p {
-  font-size: 1.3rem;
-  margin-bottom: 1.3rem;
+  @apply text-xl mb-5;
 }
 
+/* Lists styling */
+.nextpost ul,
+.nextpost ol {
+  @apply text-xl pl-8;
+}
+
+.nextpost li {
+  @apply mb-2;
+}
+
+.nextpost ol > li {
+  @apply pl-1;
+}
+
+.nextpost ul {
+  list-style-type: disc;
+}
+
+.nextpost ol {
+  list-style-type: decimal;
+}
+
+/* Image padding */
 .nextpost img {
-  padding: 2rem;
+  @apply py-8;
 }
 
+/* Code editor styles */
 .CodeMirror {
-  background: #10172a !important;
-  color: #c9c8ca !important;
-  font-size: 1.125rem !important;
+  @apply bg-gray-900 text-gray-300 text-lg;
 }
+
 .editor-toolbar {
-  background: #10172a !important;
+  @apply bg-gray-900;
 }
+
+/* Active link styling */
 .active-link {
-  color: white;
-  font-weight: bold;
+  @apply text-white font-bold;
 }
 
-/*Card styles*/
-
+/* Card styles */
 .card-glass {
+  /* Custom glass effect background and shadow */
   background-image: linear-gradient(
       135deg,
       rgb(255 255 255 / var(--glass-opacity, 30%)) 0%,
@@ -70,34 +84,31 @@ p {
       rgb(255 255 255 / var(--glass-reflex-opacity, 10%)) 25%,
       rgb(0 0 0 / 0%) 25%
     );
+
+  /* Custom shadow for glass effect */
   box-shadow: 0 0 0 1px rgb(255 255 255 / var(--glass-border-opacity, 10%))
       inset,
     0 0 0 2px rgb(0 0 0 / 5%);
-  text-shadow: 0 1px rgb(0 0 0 / var(--glass-text-shadow-opacity, 5%));
+
+  /* Tailwind utility for standard shadow size */
+  @apply shadow-md;
 }
 
+/* Responsive styles */
 @media (max-width: 768px) {
   body {
-    font-size: 14px; /* Decrease the base font size for smaller screens */
+    @apply text-sm;
   }
 
   h1 {
-    font-size: 2rem; /* 32px */
-    margin-bottom: 1rem;
+    @apply text-2xl mb-4;
   }
 
   h2 {
-    font-size: 1.8rem; /* 28.8px */
-    margin-bottom: 0.75rem;
+    @apply text-xl mb-3;
   }
 
   h3 {
-    font-size: 1.5rem; /* 24px */
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    font-size: 1.2rem; /* 16px */
-    margin-bottom: 1.2rem;
+    @apply text-lg mb-2;
   }
 }

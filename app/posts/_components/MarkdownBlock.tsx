@@ -4,11 +4,42 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { lucario } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import CopyButton from './CopyButton';
 
-function generateCodeBlock(
-  props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>
-) {
-  const match = /language-(\w+)/.exec(props.className || '');
+// Inline code component for single backticks
+function InlineCode({ children }: { children: React.ReactNode }) {
+  return (
+    <code
+      style={{
+        backgroundColor: '#263E52',
+        padding: '0.2em 0.4em',
+        borderRadius: '4px',
+        fontSize: '0.95em',
+        display: 'inline',
+      }}
+    >
+      {children}
+    </code>
+  );
+}
+
+// Code block component for triple backticks
+function CodeBlock({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const match = /language-(\w+)/.exec(className || '');
   const language = match ? match[1] : 'text';
+
+  // Convert children to string and trim any trailing newlines
+  const code = Array.isArray(children)
+    ? children
+        .map((child) => (typeof child === 'string' ? child : String(child)))
+        .join('')
+        .trimEnd()
+    : String(children).trimEnd();
+
   return (
     <div className='relative'>
       <SyntaxHighlighter
@@ -21,20 +52,11 @@ function generateCodeBlock(
           marginBottom: '2rem',
         }}
       >
-        {String(props.children).replace(/\n$/, '')}
+        {code}
       </SyntaxHighlighter>
-      <CopyButton code={String(props.children).replace(/\n$/, '')} />
+      <CopyButton code={code} />
     </div>
   );
-}
-
-function noPreWrap(
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLPreElement>,
-    HTMLPreElement
-  >
-) {
-  return <>{props.children}</>;
 }
 
 export default function MarkdownBlock({ children }: { children: string }) {
@@ -47,8 +69,16 @@ export default function MarkdownBlock({ children }: { children: string }) {
       <Markdown
         className='prose prose-invert break-words text-gray-100 prose-p:break-words prose-p:text-justify prose-a:break-all prose-img:h-1/6'
         components={{
-          code: generateCodeBlock,
-          pre: noPreWrap,
+          code({ inline, className, children }) {
+            // Fallback check if `inline` is undefined
+            const isInline = inline ?? !/\n/.test(children.toString());
+
+            return isInline ? (
+              <InlineCode>{children}</InlineCode>
+            ) : (
+              <CodeBlock className={className}>{children}</CodeBlock>
+            );
+          },
         }}
       >
         {children}
