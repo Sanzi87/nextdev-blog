@@ -46,7 +46,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/Sanzi87/nextdev-blog
-cd your-project-name
+cd nextdev-blog
 ```
 
 ## Installation
